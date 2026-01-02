@@ -1,0 +1,41 @@
+---
+title: "Exploración Multivariada - Gráfico de Coordenadas Paralelas"
+---
+
+A continuación presentamos un **gráfico de coordenadas paralelas** para el análisis multivariable de datos fisicoquímicos de vinos italianos.
+
+Le invitamos a explorar el gráfico de manera interactiva:
+
+Mueva el cursor, obtenga lecturas individuales, haga clic y arrastre el mouse, utilice *zoom in* y *zoom out*, y restaure la visualización utilizando las opciones del menú automático de exploración ubicado en la esquina superior derecha del gráfico.
+
+La explicación detallada de la visualización se presenta debajo del gráfico.
+
+```{r}
+#| label: parcoord-plot
+#| dependson: objects/p1_parcoord.rds
+#| cache: false
+
+library(plotly)
+p <- readRDS("objects/p1_parcoord.rds")
+p
+```
+
+En el eje horizontal se muestran todas las variables que conforman el control de las características de calidad del producto. En el eje vertical se representan sus magnitudes estandarizadas.
+
+Cada línea corresponde a un lote de producto.
+
+Las líneas en color gris representan observaciones típicas dentro del grupo de referencia.
+
+En color verde se muestra un lote que, si bien sigue el patrón general, presenta una o más variables que han cruzado umbrales naturales del sistema, lo que provoca que el lote completo se desvíe del patrón colectivo esperado.
+
+En color amarillo se muestran dos observaciones que no encajan en ninguna estructura típica. Se trata de dos lotes que constituyen **outliers multivariables**.
+
+Para profundizar en las métricas multivariables empleadas por nuestro método quimiométrico para el monitoreo de variables fisicoquímicas, invitamos al lector a explorar los siguientes gráficos:
+
+-   $T^2 \; vs \;Q$ en la sección 3.1
+
+-   $T^2$ en la sección 3.2
+
+-   $Q$ en la sección 3.3
+
+Allí veremos cómo se deben leer y entender los gráficos de estos métricos en el control estadístico de procesos multivariables (MSPC) fisicoquímicos.

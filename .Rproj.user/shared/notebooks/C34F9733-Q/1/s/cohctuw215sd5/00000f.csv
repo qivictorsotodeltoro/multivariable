@@ -1,0 +1,7 @@
+"0","#| label: Q-plot"
+"0","#| dependson: objects/p_Q.rds"
+"0","#| cache: false"
+"0",""
+"0","library(plotly)"
+"0","pQ <- readRDS(""objects/p_Q.rds"")"
+"0","pQ"

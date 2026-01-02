@@ -1,0 +1,112 @@
+
+
+NaOH.1 <- c(134.89, 129.30, 145.50, 143.80, 146.30, 141.50, 157.30, 141.10, 131.50, 156.60, 135.60, 128.39, 138.10, 140.50, 139.30, 152.39, 136.69, 130.30, 132.19, 134.80, 142.30)
+
+NaCl.1 <- c(203, 203.1, 208.6, 188.1, 189.1, 196.19, 185.30, 209.1, 200.8, 189.0, 192.8, 213.1, 193.8, 186.1, 204, 176.3, 186.1, 190.5, 198.6, 196.1, 198.8)
+
+I1.1   <- c(0.05, 0.06, 0.17, 0.11, 0.22, 0.16, 0.09, 0.16, 0.17, 0.19, 0.26, 0.07, 0.15, 0.30, 0.25, 0.19, 0.15, 0.23, 0.09, 0.17, 0.09)
+
+I2.1   <- c(4, 1.9, 6.1, 0.4, 0.5, 3.5, 2.9, 0.5, 3.8, 0.5, 0.5, 3.6, 2.7, 0.3, 3.8, 0.9, 1.6, 2.6, 5.7, 4.9, 0.3)
+
+Cl2.1  <- c(98.37, 98.37, 98.23, 98.44, 98.44, 98.26, 98.23, 98.69, 97.95, 97.97, 97.65, 98.43, 98.12, 98.15, 98.02, 98.22, 98.3, 98.08, 98.3, 97.98, 98.41)
+
+O2.1   <- c(1.17, 1.17, 1.42, 1.12, 1.11, 1.35, 1.4, 0.86, 1.64, 1.62, 1.94, 1.23, 1.36, 1.37, 1.54, 1.3, 1.25, 1.37, 1.16, 1.5, 1)
+
+
+
+X <- data.frame(
+  NaOH = NaOH.1,
+  NaCl = NaCl.1,
+  I1   = I1.1,
+  I2   = I2.1,
+  Cl2  = Cl2.1,
+  O2   = O2.1
+)
+
+
+
+library(MASS)
+
+set.seed(123)
+
+mu    <- colMeans(X)
+Sigma <- cov(X)
+
+X.sim <- mvrnorm(n = 30, mu = mu, Sigma = Sigma)
+
+X.sim <- as.data.frame(X.sim)
+colnames(X.sim) <- colnames(X)
+
+
+
+
+
+
+sample(x = NaOH.1, replace = TRUE)
+
+?sample
+
+
+plot(density(NaOH.1))
+plot(density(NaCl.1))
+plot(density(I1.1))
+plot(density(I2.1))
+plot(density(Cl2.1))
+plot(density(O2.1))
+
+NaOH <- rnorm(n = 30, mean = mean(NaOH.1), sd = sd(NaOH.1))
+NaCl <- rnorm(n = 30, mean = mean(NaCl.1), sd = sd(NaCl.1))
+I1 <- rnorm(n = 30, mean = mean(I1.1), sd = sd(I1.1))
+IO2 <- rnorm(n = 30, mean = mean(I2.1), sd = sd(I2.1))
+Cl2 <- rnorm(n = 30, mean = mean(Cl2.1), sd = sd(Cl2.1))
+O2 <- rnorm(n = 30, mean = mean(O2.1), sd = sd(O2.1))
+
+
+
+
+plot(NaOH.1)
+lines(NaOH.1)
+
+plot(NaCl.1)
+lines(NaCl.1)
+
+plot(I1.1)
+lines(I1.1)
+
+plot(I2.1)
+lines(I2.1)
+
+plot(Cl2.1)
+lines(Cl2.1)
+
+plot(O2.1)
+lines(O2.1)
+
+
+cor(Cl2, O2)
+
+chemical <- data.frame(
+  NaOH = NaOH,
+  NaCl = NaCl,
+  I1 = I1,
+  I2 = I2,
+  Cl2 = Cl2,
+  O2 = O2
+)
+
+cor(chemical)
+
+library(GGally)
+library(ggplot2)
+
+ggparcoord(
+  data = chemical)
+
+
+pca.chemical <- prcomp(x = chemical,
+       center = TRUE,
+       scale. = TRUE)
+
+summary(pca.chemical)
+
+pca.chemical$sdev^2

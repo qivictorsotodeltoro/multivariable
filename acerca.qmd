@@ -1,0 +1,50 @@
+---
+title: "Acerca del Autor"
+---
+
+## ¿Quién es Víctor Soto Del Toro?
+
+![](images/Face.png){width="147"}
+
+## *"Si no hay compresión, no hay control."*
+
+En análisis multivariable de datos fisicoquímicos, esta frase acuñada por el autor lo dice todo.
+
+Víctor Soto Del Toro es Químico Industrial por la Universidad Autónoma de Baja California, con especialización práctica en formulación, dispersiones, emulsiones y preparaciones fisicoquímicas para aplicaciones industriales especializadas.
+
+Ha servido en el sector público, tanto a nivel federal como estatal, en programas y proyectos de protección ambiental, incluyendo inspección industrial de residuos peligrosos, control de contaminación de aguas residuales y verificación operativa de plantas de tratamiento. Esta experiencia le permitió enfrentar, desde dentro, la brecha recurrente entre el cumplimiento documental y la evidencia técnica real.
+
+Es creador e inventor del producto Apest-Off, formulado a base de ricinoleato de zinc, actualmente utilizado por clientes de los sectores veterinario y funerario para el control inmediato y verificable de la calidad del aire respirable.
+
+Su otra pasión (inseparable de la primera) es la claridad en el rigor analítico aplicado a la rendición de cuentas técnicas. Este sitio es una manifestación directa de esa convicción.
+
+La programación estadística en el lenguaje R le ha permitido colaborar en proyectos y desarrollar aplicaciones analíticas para clientes que necesitan comprobar y demostrar, de forma defendible y auditable, que sus mediciones, resultados y decisiones están validados bajo estadística inferencial formal.
+
+**El Q.I. Víctor Soto sostiene una convicción central:**
+
+*La estocástica clásica es la cámara fotográfica que retrata la entropía en un instante.*\
+*La quimiometría la filma de inicio a fin.*
+
+El analista de datos no es más que un fotógrafo.\
+El científico y el ingeniero, en cambio, son directores de escena.
+
+La calidad de la imagen depende directamente de su dominio técnico.\
+Sin método, sin criterio y sin rigor, la imagen será inevitablemente borrosa y deficiente.
+
+Todo científico e ingeniero serio que aspire a ejercer su profesión con responsabilidad tiene acceso al control cuantitativo que las ciencias exactas exigen. No requiere intuición extraordinaria ni talento excepcional: requiere medir la variación, cuantificarla y vigilarla, porque la calidad de su trabajo en beneficio de los demás, reside precisamente allí.
+
+Y en procesos fisicoquímicos multivariables eso solo significa una cosa: **sin compresión no hay control**.
+
+Si los datos comprimen el control del proceso es totalmente posible.
+
+Un cliente no merece menos que eso.
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+Víctor vive en Tijuana con su esposa y sus dos hijos.
+
+Lo que más ama de su comunidad es la deliciosa comida.
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+[Contacto](https://www.linkedin.com/in/qivictorsotodeltoro/)

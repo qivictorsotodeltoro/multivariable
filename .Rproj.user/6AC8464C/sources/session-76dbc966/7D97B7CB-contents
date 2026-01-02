@@ -1,0 +1,83 @@
+project:
+  type: website
+
+freeze: true 
+
+website:
+  title: ""
+  
+  navbar:
+    logo: images/logo.png
+    logo-alt: "Analítica Multivariable – por Víctor Soto"
+    logo-href: https://www.linkedin.com/in/qivictorsotodeltoro/
+    background: light
+    
+    left:
+      - text: "¿Análisis Multivariable para Procesos Industriales?"
+        file: introduccion.qmd
+      - text: "Control Estadístico de Procesos Fisicoquímicos"
+        file: marco_teorico.qmd
+      - text: "Metodología y Fundamentos"
+        file: metodologiayfundamentos.qmd
+      - text: "Referencias y Fuentes"
+        file: referencias.qmd
+
+    right:
+      - text: "Acerca de"
+        file: acerca.qmd
+
+  sidebar:
+    style: docked
+    contents:
+
+      - text: "1. Inicio"
+        file: index1.qmd
+
+      - text: "2. Diagnóstico Compuesto"
+        file: index2.qmd
+        contents:
+          - text: "2.1 Gráfico Coordinado Paralelo"
+            file: parcoord.qmd
+
+      - text: "3. Diagnóstico T² y Q"
+        file: index3.qmd
+        contents:
+          - text: "3.1 Exploración General T² vs Q"
+            file: T2_Q.qmd
+          - text: "3.2 Hotelling T²"
+            file: T2.qmd
+          - text: "3.3 Jackson Q / SPE"
+            file: Q.qmd
+
+      - text: "4. Contribuciones t y q"
+        file: index4.qmd
+        contents:
+          - text: "4.1 Observación 1"
+            file: contribuciones1.qmd
+          - text: "4.2 Observación 2"
+            file: contribuciones2.qmd
+          - text: "4.3 Observación 3"
+            file: contribuciones3.qmd
+          - text: "4.4 Observación 4"
+            file: contribuciones4.qmd
+          - text: "4.5 Observación 5"
+            file: contribuciones5.qmd
+
+author:
+  name: "Q.I. Víctor Soto Del Toro"
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    page-layout: full
+    toc: false        # 👈 CLAVE
+    number-sections: true
+    number-depth: 3
+    smooth-scroll: true
+    link-external-newwindow: false
+    
+execute:
+  echo: false
+  warning: false
+  message: false

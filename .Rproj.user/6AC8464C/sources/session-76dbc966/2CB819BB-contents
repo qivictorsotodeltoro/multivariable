@@ -1,0 +1,12 @@
+
+alcohol.barolo <- italian.wine.data.raw[, 1]
+
+dev.new()
+plot(alcohol.barolo,
+     pch = 16)
+lines(alcohol.barolo)
+
+
+
+plot(italian.wine.data.raw[1:59, 29], pch = 16)
+lines(italian.wine.data.raw[1:59, 29])

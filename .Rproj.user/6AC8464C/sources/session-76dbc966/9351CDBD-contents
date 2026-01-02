@@ -1,0 +1,61 @@
+---
+title: "Exploración Multivariada - T2 de Hotelling"
+---
+
+## Gráfico T²: monitoreo multivariable lote por lote
+
+El gráfico **T² de Hotelling** permite vigilar un proceso multivariable **observación por observación**.
+
+Cada punto representa un lote completo: todas las variables fisicoquímicas colapsadas en **una sola distancia estadística**.
+
+En calibraciones avanzadas (y las más informativas), cada punto puede representar **un instante en el tiempo durante la evolución del lote**, desde su inicio hasta su final.
+
+La pregunta es simple:
+
+**¿Este lote (o este instante temporal) se comporta como el proceso históricamente estable espera que se comporte?**
+
+```{r}
+#| label: T2-plot
+#| dependson: objects/p_T2.rds
+#| cache: false
+
+library(plotly)
+pT2 <- readRDS("objects/p_T2.rds")
+pT2
+
+```
+
+### ¿Qué mide T²?
+
+T² mide la **distancia multivariable al centro del proceso**, considerando simultáneamente todas las variables y sus correlaciones.
+
+-   **T² bajo** → lote (o instante temporal) conforme
+
+-   **T² alto** → desviación estructurada del proceso
+
+No evalúa variables individuales. \
+Evalúa **el sistema como conjunto**.
+
+### Lectura práctica
+
+En una secuencia de producción:
+
+-   cada punto es un lote, o un momento durante su evolución,
+
+-   el eje vertical es **T²**,
+
+-   el eje horizontal es la **secuencia temporal**,
+
+-   el límite superior define el **control multivariable**.
+
+Un cruce del límite T² indica que **la combinación completa de variables ya no es consistente** con el estado normal del proceso. Esto exige el diagnóstico de causas-raíz (con nuestro método y tecnología esto es con un clic).
+
+### ¿Qué hace y qué no hace **T²**?
+
+✔ Detecta desviaciones multivariables tempranas\
+✔ Integra toda la información del proceso\
+✘ No identifica la causa raíz (eso viene después)
+
+**T² no reemplaza al SPC univariable:**
+
+Detecta desviaciones sistémicas más rápido cuando el proceso es multivariable.

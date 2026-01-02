@@ -1,0 +1,28 @@
+---
+title: "Fuentes Bibliográficas"
+---
+
+El autor de este sitio insiste en un punto fundamental: **ninguno de los contenidos aquí presentados constituye conocimiento nuevo ni original**. Este espacio funciona deliberadamente como un **resumen técnico estructurado**, cuyo objetivo es orientar al lector hacia las **fuentes originales** donde se desarrollan, con rigor completo, los fundamentos teóricos y metodológicos del análisis multivariable aplicado a procesos fisicoquímicos industriales.
+
+Las referencias enlistadas a continuación representan textos y artículos que han definido (y continúan definiendo) la práctica profesional de la quimiometría, el control estadístico multivariable de procesos y la tecnología analítica aplicada a la industria.
+
+**Referencias principales**
+
+-   Martens, H., & Næs, T. (1989). *Multivariate Calibration* (1st ed.). Wiley.
+
+-   Bakeev, K. A. (Ed.). (2010). *Process Analytical Technology: Spectroscopic Tools and Implementation Strategies for the Chemical and Pharmaceutical Industries* (2nd ed.). Wiley.
+
+-   Miller, J. N., & Miller, J. C. *Statistics and Chemometrics for Analytical Chemistry* (6th ed.). Pearson.
+
+-   Kourti, T., & MacGregor, J. F. (1996). *Multivariate SPC Methods for Process and Product Monitoring*. **Journal of Quality Technology**, 28(4), 409–428.\
+    DOI: 10.1080/00224065.1996.11979699
+
+-   Jackson, J. E. (1991). *A User’s Guide to Principal Components* (1st ed.). Wiley.
+
+-   Mason, R. L., & Young, J. C. *Multivariate Statistical Process Control with Industrial Applications*. SIAM.
+
+-   Johnson, R. A., & Wichern, D. W. *Applied Multivariate Statistical Analysis* (6th ed.). Pearson.
+
+Existen muchas más referencias relevantes en la literatura técnica y académica. Sin embargo, el autor ha optado por enlistar únicamente aquellas que **atienden de manera directa los intereses inmediatos del lector que desea iniciarse (o reinsertarse con rigor) en la aplicación del análisis multivariable a procesos químicos industriales en operación real**.
+
+Estas obras no se recomiendan por su novedad editorial, sino por su **estabilidad conceptual, profundidad metodológica y utilidad comprobada en contextos industriales**, donde las decisiones deben ser defendibles, auditables y sostenibles en el tiempo.

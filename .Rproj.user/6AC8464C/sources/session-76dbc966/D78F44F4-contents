@@ -1,0 +1,183 @@
+NaOH.1 <- c(134.89, 129.30, 145.50, 143.80, 146.30, 141.50, 157.30, 141.10, 131.50, 156.60, 135.60, 128.39, 138.10, 140.50, 139.30, 152.39, 136.69, 130.30, 132.19, 134.80, 142.30)
+
+NaCl.1 <- c(203, 203.1, 208.6, 188.1, 189.1, 196.19, 185.30, 209.1, 200.8, 189.0, 192.8, 213.1, 193.8, 186.1, 204, 176.3, 186.1, 190.5, 198.6, 196.1, 198.8)
+
+I1.1   <- c(0.05, 0.06, 0.17, 0.11, 0.22, 0.16, 0.09, 0.16, 0.17, 0.19, 0.26, 0.07, 0.15, 0.30, 0.25, 0.19, 0.15, 0.23, 0.09, 0.17, 0.09)
+
+I2.1   <- c(4, 1.9, 6.1, 0.4, 0.5, 3.5, 2.9, 0.5, 3.8, 0.5, 0.5, 3.6, 2.7, 0.3, 3.8, 0.9, 1.6, 2.6, 5.7, 4.9, 0.3)
+
+Cl2.1  <- c(98.37, 98.37, 98.23, 98.44, 98.44, 98.26, 98.23, 98.69, 97.95, 97.97, 97.65, 98.43, 98.12, 98.15, 98.02, 98.22, 98.3, 98.08, 98.3, 97.98, 98.41)
+
+O2.1   <- c(1.17, 1.17, 1.42, 1.12, 1.11, 1.35, 1.4, 0.86, 1.64, 1.62, 1.94, 1.23, 1.36, 1.37, 1.54, 1.3, 1.25, 1.37, 1.16, 1.5, 1)
+
+X <- data.frame(
+  NaOH = NaOH.1,
+  NaCl = NaCl.1,
+  I1   = I1.1,
+  I2   = I2.1,
+  Cl2  = Cl2.1,
+  O2   = O2.1
+)
+
+X0 <- as.matrix(X)   # tu matriz original 21 x 6
+
+
+X <- scale(X0)   # ESCALADO OBLIGATORIO
+
+cv_pca <- function(X, Amax) {
+  
+  n <- nrow(X)
+  p <- ncol(X)
+  SSX <- sum(X^2)
+  
+  Q2 <- numeric(Amax)
+  
+  for (A in 1:Amax) {
+    
+    PRESS <- 0
+    
+    for (i in 1:n) {
+      for (j in 1:p) {
+        
+        Xcv <- X
+        
+        # ocultamos un elemento
+        Xcv[i, j] <- mean(X[-i, j])
+        
+        pca <- prcomp(Xcv, center = FALSE, scale. = FALSE)
+        
+        Xhat <- pca$x[, 1:A] %*% t(pca$rotation[, 1:A])
+        
+        PRESS <- PRESS + (X[i, j] - Xhat[i, j])^2
+      }
+    }
+    
+    Q2[A] <- 1 - PRESS / SSX
+  }
+  
+  return(Q2)
+}
+
+
+Q2 <- cv_pca(X, Amax = 6)
+Q2
+
+
+plot(Q2, type = "b", pch = 19,
+     xlab = "Number of PCs", ylab = "Q²")
+abline(h = 0.05, col = "red", lty = 2)
+
+
+
+
+
+
+
+
+mu_vars <- colMeans(X0)
+sd_vars <- apply(X0, 2, sd)
+
+
+
+n_time <- 21
+t <- seq(0, 1, length.out = n_time)
+
+latent_profile <- 1 - exp(-4 * t)   # forma típica de proceso
+
+
+library(MASS)
+
+n_batch <- 30
+n_vars  <- ncol(X0)
+
+X.tensor <- array(NA, dim = c(n_time, n_vars, n_batch))
+
+set.seed(123)
+
+for (k in 1:n_batch) {
+  
+  batch_shift <- rnorm(1, 0, 0.05)        # variación batch
+  noise <- matrix(rnorm(n_time * n_vars, 0, 0.1),
+                  nrow = n_time, ncol = n_vars)
+  
+  for (j in 1:n_vars) {
+    X.tensor[, j, k] <-
+      mu_vars[j] +
+      sd_vars[j] * (latent_profile + batch_shift) +
+      noise[, j]
+  }
+}
+
+
+#X.tensor <- abs(X.tensor)
+#dim(X.tensor)
+
+
+X.unfold <- matrix(NA, nrow = n_batch, ncol = n_time * n_vars)
+
+for (k in 1:n_batch) {
+  X.unfold[k, ] <- as.vector(X.tensor[ , , k])
+}
+
+X.scaled <- scale(X.unfold)
+
+pca.mpca <- prcomp(X.scaled, center = FALSE, scale. = FALSE)
+summary(pca.mpca)
+
+
+plot(pca.mpca$sdev^2)
+
+
+
+
+cv_mpca <- function(X, Amax) {
+  
+  n <- nrow(X)   # batches
+  SSX <- sum(X^2)
+  
+  Q2 <- numeric(Amax)
+  
+  for (A in 1:Amax) {
+    
+    PRESS <- 0
+    
+    for (i in 1:n) {
+      
+      Xtrain <- X[-i, ]
+      Xtest  <- X[i, , drop = FALSE]
+      
+      pca <- prcomp(Xtrain, center = FALSE, scale. = FALSE)
+      
+      Ttest <- Xtest %*% pca$rotation[, 1:A]
+      Xhat  <- Ttest %*% t(pca$rotation[, 1:A])
+      
+      PRESS <- PRESS + sum((Xtest - Xhat)^2)
+    }
+    
+    Q2[A] <- 1 - PRESS / SSX
+  }
+  
+  return(Q2)
+}
+
+
+
+Q2_mpca <- cv_mpca(X.scaled, Amax = 10)
+Q2_mpca
+
+
+plot(Q2_mpca, type = "b", pch = 19,
+     xlab = "Number of PCs", ylab = "Q² (MPCA)")
+abline(h = 0.05, col = "red", lty = 2)
+
+
+
+dQ2 <- diff(Q2_mpca)
+dQ2
+
+
+plot(dQ2, type = "b", pch = 19,
+     xlab = "PC added", ylab = "Incremental Q²")
+abline(h = 0.01, col = "red", lty = 2)
+
+

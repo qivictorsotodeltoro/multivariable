@@ -1,0 +1,110 @@
+/* css styles */
+
+/* =========================
+   NAVBAR (barra superior)
+   ========================= */
+
+.navbar,
+.navbar-dark,
+.navbar-light {
+  background-color: #f9f4da !important;
+}
+
+.navbar a,
+.navbar-brand,
+.navbar-nav .nav-link {
+  color: #265129 !important;
+}
+
+.navbar a:hover {
+  color: #1d3f21 !important;
+}
+
+.navbar-brand img {
+  max-height: 60px;
+}
+
+/* =========================
+   SIDEBAR (izquierda)
+   ========================= */
+
+.sidebar,
+.sidebar-navigation {
+  background-color: #265129 !important;
+}
+
+.sidebar a,
+.sidebar .nav-link,
+.sidebar-navigation a {
+  color: #fefdf8 !important;
+}
+
+.sidebar a:hover {
+  color: #d6e8d6 !important;
+}
+
+/* =========================
+   HEADINGS (documentos)
+   ========================= */
+
+h1, h2, h3, h4, h5, h6 {
+  color: #265129;
+}
+
+/* =========================
+   BREADCRUMBS (ruta superior)
+   ========================= */
+
+/* Enlaces del breadcrumb */
+.breadcrumb a {
+  color: #265129 !important;
+  text-decoration: none;
+}
+
+/* Hover */
+.breadcrumb a:hover {
+  color: #1d3f21 !important;
+  text-decoration: underline;
+}
+
+/* Elemento activo (último de la ruta) */
+.breadcrumb-item.active {
+  color: #265129 !important;
+  font-weight: 600;
+}
+
+/* =========================
+   NAVBAR – efecto hover fino
+   ========================= */
+
+/* Preparar enlaces */
+.navbar .nav-link {
+  position: relative;
+  padding-bottom: 4px;
+}
+
+/* Línea inferior invisible */
+.navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #265129;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+/* Hover: aparece la línea */
+.navbar .nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Link activo (página actual) */
+.navbar .nav-link.active::after {
+  transform: scaleX(1);
+}
+
+

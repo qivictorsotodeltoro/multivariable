@@ -1,0 +1,75 @@
+---
+title: "Exploración Multivariada - Q de Jackson"
+---
+
+## Gráfico Q (SPE): monitoreo de comportamiento no modelado
+
+El gráfico **Q (Squared Prediction Error) de Jackson** permite vigilar un proceso multivariable **desde otra perspectiva complementaria a T²**.
+
+Cada punto representa un lote completo (o un instante temporal del lote): la **energía residual**, es decir, la parte del comportamiento del sistema **no explicada por el modelo multivariable dominante**.
+
+En calibraciones avanzadas, Q puede evaluarse **a lo largo del tiempo**, revelando cuándo el proceso empieza a comportarse de una manera estructuralmente distinta a lo aprendido en la fase histórica.
+
+La pregunta es distinta, pero igualmente fundamental:
+
+**¿Este lote (o instante temporal) sigue perteneciendo al mismo sistema que fue modelado?**
+
+```{r}
+#| label: Q-plot
+#| dependson: objects/p_Q.rds
+#| cache: false
+
+library(plotly)
+pQ <- readRDS("objects/p_Q.rds")
+pQ
+
+```
+
+### ¿Qué mide Q?
+
+Q mide la **variación residual**, aquello que queda **fuera del subespacio del modelo**.
+
+-   **Q bajo** → comportamiento consistente con la estructura conocida de las variables
+
+-   **Q alto** → comportamiento no explicado por el modelo
+
+Q **no mide intensidad del proceso**. \
+Mide **incongruencia estructural**, novedad o extrañeza multivariable.
+
+Un Q elevado indica posibles:
+
+-   perturbaciones externas,
+
+-   fallas incipientes,
+
+-   cambios de formulación o de régimen,
+
+-   condiciones operativas no modeladas.
+
+### Lectura práctica
+
+En una secuencia de producción:
+
+-   cada punto es un lote, (o un instante durante su evolución),
+
+-   el eje vertical es **Q**,
+
+-   el eje horizontal es la **secuencia temporal**,
+
+-   el límite superior define la **frontera de pertenencia al modelo**.
+
+Un cruce del límite Q indica que el proceso **ya no se comporta como el sistema fue calibrado**, aun cuando a simple vista algunas variables individuales parezcan normales.
+
+Esto puede sonar abstracto, así que ilustrémoslo: si 20 lotes se aproximan al perfil original y todos son conformes, pero el lote 21, aunque sea aceptable pero no necesariamente rechazable, su perfil será diferente y Q lo informará. Dependerá del analista decidir si esa diferencia es materialmente relevante, aunque haya sido estadísticamente significativa.
+
+Esto exige diagnóstico estructural (con nuestro método y tecnología, también es inmediato).
+
+### ¿Qué hace y qué no hace Q?
+
+✔ Detecta comportamientos nuevos o no modelados\
+✔ Revela cambios de naturaleza del proceso\
+✘ No cuantifica intensidad dentro del modelo (eso es T²)
+
+**Q no sustituye a T² ni al SPC univariable:**
+
+Complementa el monitoreo revelando **cuándo el proceso deja de ser el mismo**.

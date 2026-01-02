@@ -1,0 +1,1131 @@
+# Instructivo para crear un nuevo proyecto de Procedimiento de Control Estadísticvo Muñltivariable
+# PCA + T2 + Q/SPE + Proyección + Descomposición  
+
+# Aquí inicia todo cuando no tenemos nada y el cliente nos entrega los primeros datos
+# Comienza la Calibración Multivariable PCA
+
+
+# --- Carga de librerías necesarias --- #
+
+library(readxl)                                     # Cargamos poque casi todo viene en Excel
+library(GGally)
+library(plotly)
+
+# --- Preparación de datos recibidos --- #
+ 
+file.path <- file.choose()                          # Obtenemos ruta del archivo Exce,l
+italian.wine.data.raw <- read_xlsx(file.path)       # Cargamos datos del archivo Excel
+#View(italian.wine.data.raw)                         # Echamos un vistazo al archivo Excel  
+
+
+# --- Transformación del archivo Excel a foramto rda --- #
+
+saveRDS(
+  italian.wine.data.raw,                            # Nombre del objetvo que guardaremos
+  file = "italian_wine_data_raw.rds",               # Nombre del archivo rda que guardaremos
+  compress = "xz"                                   # Tipo de compresión
+)
+
+# Nunca vuelves a tocar el archivo Excel
+
+
+# --- Obtenemos archivos RDS y empezamos a trabajar y analizar y procesas ---#
+italian.wine.data.raw <- readRDS(
+                                 file.path(
+                                           getwd(),
+                                            "italian_wine_data_raw.rds"
+                                          )
+                                )
+
+
+# --- Comenzamos el procesamiento y análisis de los datos --- #
+
+X.Grignolino <- as.matrix(italian.wine.data.raw[60:130, -1])                    # Extraemos la sección que nos interesa analizar
+
+#X.Grignolino <- X.Grignolino[-c(11, 38, 44, 63),]
+
+pca.Grignolino <- prcomp(x = X.Grignolino,                                      # Corremos modelo PCA para sección de interés
+                     center = TRUE, 
+                     scale. = TRUE)
+
+
+# --- Visualización de scree plot --- #
+
+dev.new()
+plot(pca.Grignolino$sdev^2,                                  # Buscamos el corte en la curva suave del codo
+     type = "b",                                         # Ese es el número de PCs que aplicaremos   
+     ylab = "Varianza")
+
+
+# --- Extracción de elementos del modelo PCA --- #
+
+pca.sigma    <- pca.Grignolino$sdev                          # Eigenvalues
+
+pca.loadings <- pca.Grignolino$rotation                      # Eigenvectors P
+
+pca.center   <- pca.Grignolino$center                        # Promedios individuales
+
+pca.scale    <- pca.Grignolino$scale                         # Desviaciones estándar individuales
+
+pca.scores   <- pca.Grignolino$x                             # Scores T
+
+pca.summary  <- summary(pca.Grignolino)                      # Resumen 
+
+
+# --- Obtención de Matriz de Covarianza de Componentes de Intereés --- ###
+
+scores <- pca.scores[, c(1,2,3,4,5,6,7,8,9)]             # Extraemos los scores de los componentes de interés
+
+Lambda_scores <- cov(scores)                             # Obtenemos matriz de covarianza de los componentes de interés
+
+
+# --- Función para organizar los loadings y variables de cada PC por separado --- #
+
+pca_loadings_variables_tabla <- function(pca, k, digits = 3) { 
+  
+  load <- pca$rotation[, k]
+  
+  pos <- load[load > 0]
+  neg <- load[load < 0]
+  
+  pos <- sort(pos, decreasing = TRUE)
+  neg <- sort(neg, decreasing = TRUE)
+  
+  data.frame(
+    variable = c(names(pos), names(neg)),
+    loading  = round(c(pos, neg), digits),
+    row.names = NULL
+  )
+}
+
+
+# --- Creación de tablas de loadings por variables, los llamamos Subsistemas --- #
+
+subsistema1_loadings <- pca_loadings_variables_tabla(pca = pca.Grignolino, k = 1)
+subsistema2_loadings <- pca_loadings_variables_tabla(pca = pca.Grignolino, k = 2)
+subsistema3_loadings <- pca_loadings_variables_tabla(pca = pca.Grignolino, k = 3)
+subsistema4_loadings <- pca_loadings_variables_tabla(pca = pca.Grignolino, k = 4)
+subsistema5_loadings <- pca_loadings_variables_tabla(pca = pca.Grignolino, k = 5)
+subsistema6_loadings <- pca_loadings_variables_tabla(pca = pca.Grignolino, k = 6)
+subsistema7_loadings <- pca_loadings_variables_tabla(pca = pca.Grignolino, k = 7)
+subsistema8_loadings <- pca_loadings_variables_tabla(pca = pca.Grignolino, k = 8)
+subsistema9_loadings <- pca_loadings_variables_tabla(pca = pca.Grignolino, k = 9)
+
+
+# --- Quimiometría T2 Hotelling según Algoritmo de Jackson --- #
+
+pca.lambda <- diag(Lambda_scores)                           # λ₁ … λ₄ seleccionados según el scree plot  
+pca.scores.select <- pca.scores[, 1:9]                      # scores T (n × 4)
+
+
+T2 <- rowSums(                                              # Cálculo de T2 Hotelling para el vector del conjunto de calibración 
+  sweep(x = pca.scores.select^2, 
+        MARGIN = 2, 
+        STATS = pca.lambda, 
+        FUN = "/")
+)
+
+# --- Quimiometría para calcular UCL de T2 Hotelling --- #
+
+p <- 9                                                     # Número de PCs previamente seleccionados 
+n <- 30                                                    # Número de observaciones del conjunto de calibración
+f <- qf(p = 0.95, df1 = p, df2 = n - p)                    # Estadístico F de Fisher
+
+T2.limit <- p * (n - 1) / (n - p) * f                      # Cálculo de UCL según Jackson
+
+
+# --- Quimiometría para conocer cada distancia ortogonal Q (SPE) de cada observación en todo el conjunto de calibración --- #
+
+A <- 9                                                     # Definición del número de PCs 
+
+Xhat <- pca.scores[, 1:A] %*% t(pca.loadings[, 1:A])       # Primero obtenemos la matriz de valores estimados
+
+E <- scale(X.Grignolino,                                       # Restamos valores estimados de valores originales
+           center = pca.center, 
+           scale = pca.scale) - Xhat
+
+Q <- rowSums(E^2)                                          # Obtenemos el vector del estadístico Q (SPE)
+
+length(Q) == nrow(X.Grignolino)      # TRUE                    # Verificamos que no falte nada
+Q >= 0                           # siempre                 # Esta condición siempre se debe cumplir
+
+
+# --- Algoritmo de Jackson y Mudholkar para conocer Q_alpha --- #
+
+
+lambda <- pca.Grignolino$sdev^2                                # Obtenemos todas las varianzas λ de todo el modelo 
+lambda_res <- lambda[(A + 1):length(lambda)]               # Seleccionamos solo las varianzas λ que quedan fuera del modelo
+
+
+theta1 <- sum(lambda_res)                                  # Procesamos las varianzas λ theta 1, theta 2 y theta 3
+theta2 <- sum(lambda_res^2)
+theta3 <- sum(lambda_res^3)
+
+
+stopifnot(theta1 > 0, theta2 > 0, theta3 > 0)              # Ninguna theta debe ser negativa
+
+
+h0 <- max(                                                 # Obtenemos el valor h0, que debe ser mayor que 0
+  1 - (2 * theta1 * theta3) / (3 * theta2^2),
+  1e-6
+)
+
+
+alpha <- 0.95                                              # Obtenemos el cuantil para el nivel de confianza definido
+z_alpha <- qnorm(alpha)
+
+
+Q_UCL <- theta1 * (                                        # Calculamos Q Crítico según la fórmula de Jackson y Mudholkar
+  (z_alpha * sqrt(2 * theta2 * h0^2)) / theta1 +
+    1 +
+    (theta2 * h0 * (h0 - 1)) / theta1^2
+)^(1 / h0)
+
+
+
+# --- Fin de la sección de análisis --- #
+
+# --- Inicio de la sección de producción gráfica --- #
+
+
+
+# --- Ampliación de Tabla de Datos Grignolino con Resultados de T2 y Q con Evaluación --- #
+
+# Primero convertimos tabla y asignamos resultados de T2 y Q
+df_X.Grignolino         <- as.data.frame(X.Grignolino)     # Primero convertimos la matriz a data frame
+df_X.Grignolino$T2      <- T2                              # Asignamos los valores de T2 a su respectivo objeto
+df_X.Grignolino$Q       <- Q                               # Asignamos los valores de Q a su respectivo objeto  
+
+# Descripción de resultados T2 y Q por cada objeto
+df_X.Grignolino$Status                 <- "Normal"                               # Asignamos una nueva columna del status del resultado de cada observación
+df_X.Grignolino$Status[T2 > T2.limit]  <- "T² fuera de control"                  # Asignamos descripción tras evaluación
+df_X.Grignolino$Status[Q  > Q_UCL]     <- "Q fuera de control"                   # Asignamos descripción tras evaluación
+df_X.Grignolino$Status[T2 > T2.limit & Q > Q_UCL]  <- "T² y Q fuera de control"  # Asignamos descripción tras evaluación
+
+# Transformamos las evaluacion de caracter a factor con los tres niveles previamente definidos
+df_X.Grignolino$Status   <- factor(x = df_X.Grignolino$Status,
+                                   levels = c("Normal", "T² fuera de control", "Q fuera de control", "T² y Q fuera de control"))
+
+# Incluimosn el número de observaciones como secuencia
+df_X.Grignolino$Obs <- seq_len(nrow(df_X.Grignolino))
+
+
+
+
+# --- Sistema de diagnóstico gráfico para T2, Q y T2 vs Q --- #
+
+library(GGally)
+library(ggplot2)
+library(plotly)
+
+# Gráfico Coordinado Paralelo Interactivo
+
+# Inicio de producción de gráfico coordinado paralelo interactivo
+
+p <- ggparcoord(                                # Primero producimos el gráfico y lo asignamos en un objeto "p"
+  data = df_X.Grignolino,
+  columns = 1:ncol(X.Grignolino),
+  groupColumn = "Status",
+  mapping = aes(
+    size = Status,
+    text = paste0("Obs: ", Obs, 
+                  "<br>Estatus: ", Status, 
+                  "<br>Valor actual T²: ", round(T2, 1), " (Límite T²: ", round(T2.limit, 1), ")",
+                  "<br>Valor actual Q: ", round(Q, 1), " (Límite Q: ", round(Q_UCL, 1), ")")
+    ),
+  alphaLines = 1
+) +
+
+  scale_colour_manual(
+    values = c(
+      "Normal" = "grey70",
+      "T² fuera de control" = "#265129",
+      "Q fuera de control"  = "orange",
+      "T² y Q fuera de control" = "red"
+    )
+  ) +
+  
+  scale_size_manual(
+    values = c(
+      "Normal" = 0.4,
+      "T² fuera de control" = 1.2,
+      "Q fuera de control"  = 1.4,
+      "T² y Q fuera de control" = 1.6
+    )
+  ) +
+  
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+    legend.title = element_blank()
+  ) +
+  
+  labs(
+    title = "",
+    subtitle = "",
+    x = "",
+    y = "Desviaciones Estándar (z-score)"
+  )
+
+# Convertimos de ggplot7GGally/ggparcoord a ggploty
+
+p1 <- ggplotly(p, 
+               tooltip = "text",
+               height = 675)                               # El objeto gráfico "p" lo reprocesamos como ggplotly para volverlo interactivo      
+ 
+# Últimos ajustes de formato del encabezdo y subencabezadp
+p1 <- p1 %>% 
+  layout(
+    title = list(
+      text = paste0(
+        "Control Estadístico de Procesos Fisicoquímicos | PCA: Hotelling-Jackson",
+        "<br><span style='font-size:12px;'>",
+        "Verde Oscuro: desbalance del proceso (T²) | ",
+        "Naranja: fenómeno no modelado (Q) | ",
+        "Rojo: desbalance (T²) + fuera de modelo (Q)",
+        "</span>"
+      ),
+      x = 0.04,        # 👉 margen horizontal elegante
+      y = 0.96,        # 👉 baja ligeramente el título
+      xanchor = "left"
+    ),
+    margin = list(
+      t = 90           # 👉 espacio real arriba (CRÍTICO)
+    )
+  )
+
+p1    
+
+# Fin de gráfico paralelo coordinado
+
+
+# --- Gráfico Hotelling T2 vs Jackson Q --- #
+
+p_T2Q_gg <- ggplot(
+  df_X.Grignolino,
+  aes(
+    x = T2,
+    y = Q,
+    colour = Status,
+    text = paste0(
+      "Obs: ", Obs,
+      "<br>Estatus: ", Status,
+      "<br>T²: ", round(T2, 1), " (Límite: ", round(T2.limit, 1), ")",
+      "<br>Q: ", round(Q, 1), " (Límite: ", round(Q_UCL, 1), ")"
+    )
+  )
+) +
+  
+  geom_point(size = 2.8, alpha = 0.9) +
+  
+  # Límites de control
+  geom_vline(xintercept = T2.limit, linetype = "dashed", colour = "red") +
+  geom_hline(yintercept = Q_UCL,  linetype = "dashed", colour = "red") +
+  
+  scale_colour_manual(
+    values = c(
+      "Normal" = "grey70",
+      "T² fuera de control" = "#265129",
+      "Q fuera de control"  = "orange",
+      "T² y Q fuera de control" = "red"
+    )
+  ) +
+  
+  scale_x_continuous(
+    limits = c(0, max(T2) * 1.2),
+    expand = c(0, 0)
+  ) +
+  scale_y_continuous(
+    limits = c(0, max(Q) * 1.2),
+    expand = c(0, 0)
+  ) +
+  
+  theme_minimal() +
+  theme(
+    legend.title = element_blank()
+  ) +
+  
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Hotelling T²",
+    y = "Q (SPE)"
+  )
+
+p_T2Q <- ggplotly(p_T2Q_gg, 
+                  tooltip = "text",
+                  height = 675)
+
+p_T2Q <- p_T2Q %>%
+  layout(
+    title = list(
+      text = paste0(
+        "Diagnóstico Ortogonal: T² vs Q | Hotelling–Jackson",
+        "<br><span style='font-size:12px;'>",
+        "Verde Oscuro: desbalance del proceso (T²) | ",
+        "Naranja: fenómeno no modelado (Q) | ",
+        "Rojo: desbalance (T²) + fuera de modelo (Q)",
+        "</span>"
+      ),
+      x = 0.04,        # 👉 margen horizontal elegante
+      y = 0.96,        # 👉 baja ligeramente el título
+      xanchor = "left"
+    ),
+    margin = list(
+      t = 90           # 👉 espacio real arriba (CRÍTICO)
+    )
+  )
+
+p_T2Q
+
+# Fin de Gráfico Hotelling T2 vs Jackson Q
+
+
+
+#--- Gráfico T2 Hotelling por PCA --- #
+
+p_T2_gg <- ggplot(
+  df_X.Grignolino,
+  aes(
+    x = Obs,
+    y = T2,
+    colour = Status,
+    text = paste0(
+      "Obs: ", Obs,
+      "<br>Estatus: ", Status,
+      "<br>T²: ", round(T2, 1),
+      "<br>Límite T²: ", round(T2.limit, 1)
+    )
+  )
+) +
+  
+  # 👉 CONTINUIDAD TEMPORAL
+  geom_line(
+    aes(x = Obs, y = T2),
+    inherit.aes = FALSE,
+    colour = "grey50",
+    linewidth = 0.6,
+    alpha = 0.6
+  ) +
+  
+  geom_point(size = 2.8, alpha = 0.9) +
+  
+  geom_hline(
+    yintercept = T2.limit,
+    linetype = "dashed",
+    colour = "red",
+    linewidth = 0.8
+  ) +
+  
+  scale_colour_manual(
+    values = c(
+      "Normal" = "grey70",
+      "T² fuera de control" = "#265129",
+      "Q fuera de control"  = "orange",
+      "T² y Q fuera de control" = "red"
+    )
+  ) +
+  
+  # 🔑 CLAVE ABSOLUTA
+  scale_y_continuous(
+    limits = c(0, max(T2) * 1.2),
+    expand = c(0, 0)
+  ) +
+  
+  theme_minimal() +
+  theme(
+    legend.title = element_blank()
+  ) +
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Observación",
+    y = "Hotelling T²"
+  )
+
+p_T2 <- ggplotly(p_T2_gg, 
+                 tooltip = "text",
+                 height = 675)
+
+p_T2 <- p_T2 %>%
+  layout(
+    title = list(
+      text = paste0(
+        "Gráfico de Control Hotelling T² (PCA)",
+        "<br><span style='font-size:12px;'>",
+        "Verde Oscuro: desbalance del proceso (T²) | ",
+        "Naranja: fenómeno no modelado (Q) | ",
+        "Rojo: desbalance (T²) + fuera de modelo (Q)",
+        "</span>"
+      ),
+      x = 0.04,        # 👉 margen horizontal elegante
+      y = 0.96,        # 👉 baja ligeramente el título
+      xanchor = "left"
+    ),
+    margin = list(
+      t = 90           # 👉 espacio real arriba (CRÍTICO)
+    )
+  )
+
+p_T2
+
+# Fin de Gráfico T2 Hotelling por PCA 
+
+
+
+# --- Inicio de Gráfico Q de Jackson --- #
+
+p_Q_gg <- ggplot(
+  df_X.Grignolino,
+  aes(
+    x = Obs,
+    y = Q,
+    colour = Status,
+    text = paste0(
+      "Obs: ", Obs,
+      "<br>Estatus: ", Status,
+      "<br>Q (SPE): ", round(Q, 1),
+      "<br>Límite Q: ", round(Q_UCL, 1)
+    )
+  )
+) +
+  
+  # 👉 CONTINUIDAD TEMPORAL
+  geom_line(
+    aes(x = Obs, y = Q),
+    inherit.aes = FALSE,
+    colour = "grey50",
+    linewidth = 0.6,
+    alpha = 0.6
+  ) +
+  
+  geom_point(size = 2.8, alpha = 0.9) +
+  
+  geom_hline(
+    yintercept = Q_UCL,
+    linetype = "dashed",
+    colour = "red",
+    linewidth = 0.8
+  ) +
+  
+  scale_colour_manual(
+    values = c(
+      "Normal" = "grey70",
+      "T² fuera de control" = "#265129",
+      "Q fuera de control"  = "orange",
+      "T² y Q fuera de control" = "red"
+    )
+  ) +
+  
+  # 🔑 CLAVE: eje Y desde 0
+  scale_y_continuous(
+    limits = c(0, max(Q) * 1.2),
+    expand = c(0, 0)
+  ) +
+  
+  theme_minimal() +
+  theme(
+    legend.title = element_blank()
+  ) +
+  labs(
+    title = "",
+    subtitle = "",
+    x = "Observación",
+    y = "Q (SPE)"
+  )
+
+p_Q <- ggplotly(p_Q_gg, 
+                tooltip = "text",
+                height = 675)
+
+p_Q <- p_Q %>%
+  layout(
+    title = list(
+      text = paste0(
+        "Gráfico de Control Jackson Q (SPE) - PCA",
+        "<br><span style='font-size:12px;'>",
+        "Verde Oscuro: desbalance del proceso (T²) | ",
+        "Naranja: fenómeno no modelado (Q) | ",
+        "Rojo: desbalance (T²) + fuera de modelo (Q)",
+        "</span>"
+      ),
+      x = 0.04,        # 👉 margen horizontal elegante
+      y = 0.96,        # 👉 baja ligeramente el título
+      xanchor = "left"
+    ),
+    margin = list(
+      t = 90           # 👉 espacio real arriba (CRÍTICO)
+    )
+  )
+
+p_Q
+
+# Fin de Gráfico Q de Jackson 
+
+
+
+
+
+
+# --- Inicio de Construcción de Gráficos de Contribuciones t y q según Quimiometría de Miller/Bakeev--- #
+
+
+# --- Algoritmo de Charles E. Miller y Katherine Bakeev para Determinar Contribuciones t y q--- #
+
+# Comienza el procesamiento de cada nueva observación (del conjunto de calibración o de monitoreo, da igual)
+
+obs <- 5
+
+# Autoscaling de la nueva observación
+xp.newsample <- (as.numeric(X.Grignolino[obs,]) - pca.center)/pca.scale         # Autoscale obligatorio
+
+# Proyección al subespacio
+t.hat.new <- xp.newsample %*% pca.loadings[, 1:A]                               # Scores de la nueva observación
+
+#Reconstrucción del espacio original
+x.hat.p <- t.hat.new %*% t(pca.loadings[,1:A])                                  # Respuesta estimada por el modelo PCA para la nueva observación
+
+# Residuales (SPE / Q)
+e.hat.p <- xp.newsample - x.hat.p                                               # Residual de la nueva observación; la diferencia entre la observación original y la respuesta estimada por el modelo PCA
+
+
+# Cálculo de Hotelling T2 para cada nueva observación (o la observación que sea)
+
+T2.newsample <- sum((t.hat.new^2) / diag(Lambda_scores))                        # Kucheryavskiy
+
+# T2.newsample <- t.hat.new %*% solve(Lambda_scores) %*% t(t.hat.new)           # Miller, como referencia del álgebra lineal 
+
+
+# Cálculo de Q (SPE) para cada nueva observación (o la observación que sea)     
+
+Q.newsample <- sum(e.hat.p^2)                                                   # Kucheryavskiy
+
+# Q.newsample <- e.hat.p %*% t(e.hat.p)                                         # Miller, como referencia del álgebra lineal
+
+
+# Contribuciones t (procedimiento especial de Miller, en tres pasos)
+
+Lambda_mtx <- diag(1 / sqrt(diag(Lambda_scores)))                               # Paso 1, obtener matriz de la raíz cuadrada inversa de la matriz de covarianza de los componentes principales seleccionados
+t_cont <- as.numeric(t.hat.new) %*% Lambda_mtx %*% t(pca.loadings[, 1:A])       # Pasi 2, descomposición de T2 de la observación de interés
+colnames(t_cont) <- rownames(pca.loadings)                                      # Paso 3
+
+
+# Contribuciones q (Método Miller)
+
+q_cont <- e.hat.p                                                               # Las contribuciones q son resultado de la diferencias entre la reconstrucción del modelo y la observación original
+colnames(q_cont) <- rownames(pca.loadings)
+
+# --- Fin de Algoritmo Matemático para Determinación de Contribuciones t y q de Miller/Bakeev ---#
+
+
+
+
+
+
+
+
+
+
+# --- Inicio de gráfico t ---#
+
+# --- Data frame de contribuciones t --- #
+
+df_t_cont <- data.frame(
+  Variable     = colnames(t_cont),
+  Contribution = as.numeric(t_cont)
+)
+
+# Ordenamos por magnitud absoluta (diagnóstico)
+df_t_cont <- df_t_cont[order(abs(df_t_cont$Contribution), decreasing = TRUE), ]
+
+# Convertimos Variable en factor para respetar el orden en ggplot
+df_t_cont$Variable <- factor(
+  df_t_cont$Variable,
+  levels = df_t_cont$Variable
+)
+
+# Inicio de gráfico de contribuciones t
+p_t_cont_gg <- ggplot(
+  df_t_cont,
+  aes(
+    x = Variable,
+    y = Contribution,
+    text = paste0(
+      "Variable: ", Variable,
+      "<br>Contribución t: ", round(Contribution, 3)
+    )
+  )
+) +
+  
+  geom_col(
+    fill  = "#265129",
+    width = 0.75
+  ) +
+  
+  geom_hline(
+    yintercept = 0,
+    linetype   = "dashed",
+    colour     = "grey40",
+    linewidth  = 0.7
+  ) +
+  
+  scale_y_continuous(
+    limits = c(
+      min(df_t_cont$Contribution) * 1.2,
+      max(df_t_cont$Contribution) * 1.2
+    ),
+    expand = c(0, 0)
+  ) +
+  
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(
+      angle = 90,
+      vjust = 0.5,
+      hjust = 1,
+      size  = 10
+    ),
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)
+  ) +
+  
+  labs(
+    title = "",
+    x     = "",
+    y     = "Contribución a T² (modelo PCA)"
+  )
+
+# Conversión de ggplot a ggplotly
+p_t_cont <- ggplotly(p_t_cont_gg,  
+                     tooltip = "text",
+                     height = 675)
+
+# Ajustes estéticos en ggplotly
+p_t_cont <- p_t_cont %>%
+  layout(
+    title = list(
+      text = paste0(
+        "Contribuciones Individuales t a la Varianza Total (Hotelling T²)",
+        "<br><span style='font-size:12px;'>",
+        "Diagnóstico de desplazamiento dentro del subespacio PCA — Observación ",
+        obs,
+        "</span>"
+      ),
+      x       = 0.04,
+      y       = 0.96,
+      xanchor = "left"
+    ),
+    margin = list(
+      t = 90
+    )
+  )
+
+#p_t_cont
+
+# Fin de gráfico de contribuciones t
+
+
+
+
+
+
+
+
+# --- Inicio de gráfico q ---#
+
+
+# --- Data frame de contribuciones q --- #
+
+df_q_cont <- data.frame(
+  Variable     = colnames(q_cont),
+  Contribution = as.numeric(q_cont)
+)
+
+# Ordenamos por magnitud absoluta (diagnóstico)
+df_q_cont <- df_q_cont[order(abs(df_q_cont$Contribution), decreasing = TRUE), ]
+
+# Convertimos Variable en factor para respetar el orden en ggplot
+df_q_cont$Variable <- factor(
+  df_q_cont$Variable,
+  levels = df_q_cont$Variable
+)
+
+# --- Inicio de gráfico de contribuciones q --- #
+p_q_cont_gg <- ggplot(
+  df_q_cont,
+  aes(
+    x = Variable,
+    y = Contribution,
+    text = paste0(
+      "Variable: ", Variable,
+      "<br>Contribución q: ", round(Contribution, 3)
+    )
+  )
+) +
+  
+  geom_col(
+    fill  = "orange",
+    width = 0.75
+  ) +
+  
+  geom_hline(
+    yintercept = 0,
+    linetype   = "dashed",
+    colour     = "grey40",
+    linewidth  = 0.7
+  ) +
+  
+  scale_y_continuous(
+    limits = c(
+      min(df_q_cont$Contribution) * 1.2,
+      max(df_q_cont$Contribution) * 1.2
+    ),
+    expand = c(0, 0)
+  ) +
+  
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(
+      angle = 90,
+      vjust = 0.5,
+      hjust = 1,
+      size  = 10
+    ),
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)
+  ) +
+  
+  labs(
+    title = "",
+    x     = "",
+    y     = "Contribución a Q (SPE)"
+  )
+
+# Conversión de ggplot a ggplotly
+p_q_cont <- ggplotly(
+                     p_q_cont_gg,
+                     tooltip = "text",
+                     height = 675)
+
+# Ajustes estéticos en ggplotly
+p_q_cont <- p_q_cont %>%
+  layout(
+    title = list(
+      text = paste0(
+        "Contribuciones Individuales q a los Residuales (SPE)",
+        "<br><span style='font-size:12px;'>",
+        "Diagnóstico de información no capturada por el modelo PCA — Observación ",
+        obs,
+        "</span>"
+      ),
+      x       = 0.04,
+      y       = 0.96,
+      xanchor = "left"
+    ),
+    margin = list(
+      t = 90
+    )
+  )
+
+#p_q_cont
+
+# Fin de gráfico de contribuciones q
+
+
+
+
+# --- Guardar objetos finales para sitio Quarto ---"
+
+getwd()
+
+dir.create("objects", showWarnings = FALSE)
+
+saveRDS(p1,      "objects/p1_parcoord.rds")
+saveRDS(p_T2Q,   "objects/p_T2Q.rds")
+saveRDS(p_T2,    "objects/p_T2.rds")
+saveRDS(p_Q,     "objects/p_Q.rds")
+
+# Gráficos dee controbición por cada observación
+
+saveRDS(p_t_cont,"objects/p_t_cont5.rds")
+saveRDS(p_q_cont,"objects/p_q_cont5.rds")
+
+# Test
+
+getwd()
+
+p1coord  <- readRDS("objects/p1_parcoord.rds")
+p1T2Q    <- readRDS("objects/p_T2Q.rds")
+p1T2     <- readRDS("objects/p_T2.rds")
+p1Q      <- readRDS("objects/p_Q.rds")
+
+gt <- readRDS("objects/p_t_cont1.rds")
+qt <- readRDS("objects/p_q_cont1.rds")
+
+
+
+
+
+
+
+
+
+
+
+# --- Inicio de integración de gráficos de diagnóstico multivariable como objetos conjuntos --- #
+
+library(htmltools)
+library(htmlwidgets)
+
+# 1 - Gráfico Parcoord en html
+
+html_page_p1 <- tagList(      
+  
+  tags$h2(""),
+  
+  p1,
+  
+  tags$hr()
+)
+
+browsable(html_page_p1)
+
+# 💾 Guardar correctamente
+save_html(
+  html_page_p1,
+  file = "diagnostico_multivariado_p1.html"
+)
+
+
+
+# 2 - Gráficos T2-Q, T2 y Q
+
+html_page_T2Q <- tagList(
+  
+  tags$h2(""),
+  p_T2Q,
+  
+  tags$hr(),
+  
+  tags$h2(""),
+  p_T2,
+  
+  tags$hr(),
+  
+  tags$h2(""),
+  p_Q
+)
+
+
+browsable(html_page_T2Q)
+
+
+# 💾 Guardar correctamente
+save_html(
+  html_page_T2Q,
+  file = "diagnostico_multivariado_T2_Q.html"
+)
+
+        
+
+
+
+# 3 - Gráficos de Contribuciones t y q
+
+html_page_tq_cont <- tagList(
+  
+  # --- Row 1: t-cont ---
+  tags$h2(""),
+  p_t_cont,
+  
+  tags$hr(),
+  
+  # --- Row 2: q-cont ---
+  tags$h2(""),
+  p_q_cont,
+  
+  tags$hr()
+)
+
+
+browsable(html_page_tq_cont)
+
+
+# 💾 Guardar correctamente
+save_html(
+  html_page_tq_cont,
+  file = "diagnostico_multivariado_tq_cont.html"
+)
+
+
+# --- Fin de integración de gráficos de diagnóstico multivariable como objetos conjuntos --- #
+
+        
+        
+library(htmltools)
+
+index_page <- tags$html(
+  
+  tags$head(
+    tags$title("Diagnóstico Multivariado PCA — Índice"),
+    tags$style(HTML("
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background-color: #fafafa;
+      }
+      h1 {
+        margin-bottom: 10px;
+      }
+      p {
+        max-width: 900px;
+        color: #444;
+      }
+      ul {
+        margin-top: 30px;
+        font-size: 1.1em;
+      }
+      li {
+        margin-bottom: 15px;
+      }
+      a {
+        text-decoration: none;
+        color: #0056b3;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    "))
+  ),
+  
+  tags$body(
+    
+    tags$h1("Diagnóstico Multivariado por PCA"),
+    
+    tags$p(
+      "Este índice permite acceder a los distintos módulos de diagnóstico ",
+      "multivariable utilizados para el control estadístico de procesos fisicoquímicos ",
+      "mediante PCA, Hotelling T² y estadístico Q (SPE)."
+    ),
+    
+    tags$ul(
+      
+      tags$li(
+        tags$a(
+          href = "diagnostico_multivariado_p1.html",
+          target = "_blank",
+          "1. Vista Multivariable Global — Gráfico de Coordenadas Paralelas"
+        )
+      ),
+      
+      tags$li(
+        tags$a(
+          href = "diagnostico_multivariado_T2_Q.html",
+          target = "_blank",
+          "2. Diagnóstico Ortogonal — Plano T²–Q y Evolución Temporal"
+        )
+      ),
+      
+      tags$li(
+        tags$a(
+          href = "diagnostico_multivariado_tq_cont.html",
+          target = "_blank",
+          "3. Identificación de Variables — Contribuciones t y q"
+        )
+      )
+      
+    ),
+    
+    tags$hr(),
+    
+    tags$p(
+      style = "font-size: 0.9em; color: #666;",
+      "Reporte generado automáticamente a partir de análisis multivariado PCA. ",
+      "Los gráficos son interactivos y se abren en ventanas independientes."
+    )
+  )
+)
+
+# 💾 Guardar índice
+save_html(
+  index_page,
+  file = "index_diagnostico_multivariado.html"
+)
+
+
+
+
+
+
+
+
+
+        
+
+# --- Estructuración del Contenido en una Lista para Producir Archivo RDS --- #
+
+calibration <- list(
+  
+  # 1. Datos crudos
+  datos = italian.wine.data.raw,
+  
+  # 2. Datos de interés
+  
+  datos.interes = X.Barolo,
+  
+  # . Modelo PCA
+  pca = pca.Barolo,                               # prcomp completo
+  
+  # 2. Preprocesamiento (CRÍTICO)
+  center = pca$center,
+  scale  = pca$scale,
+  
+  # 3. Estructura del sistema
+  loadings = pca.Barolo$rotation,
+  scores   = pca.Barolo$x,
+  sdev     = pca.Barolo$sdev,
+  
+  # 4. Límites de control
+  limits = list(
+    T2 = T2_limits,
+    Q  = Q_limits
+  ),
+  
+  # 5. Sub-sistemas (tu aporte conceptual)
+  subsistemas = list(
+    PC1 = subsistema1_loadings,
+    PC2 = subsistema2_loadings,
+    PC3 = subsistema3_loadings,
+    PC4 = subsistema4_loadings
+  ),
+  
+  # 6. Densidades / geometría y otros elementos KDE
+  kde = pca.Barolo.dens3d,
+  
+  x.latt = x.latt,
+  y.latt = y.latt,
+  z.latt = z.latt,
+  
+  qalpha  = qalpha, 
+  qcols   = qcols,
+  qlevels = qlevels,
+  
+  # 7. Elementos de colores
+  pal_fun    = pal_fun,
+  data_ncol  = data_ncol, 
+  sist4.cols = sist4.cols, 
+  data_cols  = data_cols,
+  
+  # 8. Metadatos (NO subestimar esto)
+  meta = list(
+    created = Sys.time(),
+    n_obs   = nrow(X.Barolo),
+    n_var   = ncol(X.Barolo),
+    vars    = colnames(X.Barolo),
+    method  = "PCA + T2 + Q",
+    author  = "Q.I. Victor Soto Del Toro"
+  )
+)
+
+# --- Creación de Archivo RDS incluyendo todo el contenido generado en este script de análisis --- #
+
+saveRDS(calibration, "calibration_model.rds")
+

@@ -1,0 +1,90 @@
+---
+title: "4. Análisis de Causas-Raíz en MSPC de Datos Fisicoquímicos"
+---
+
+## ¿De dónde nacen realmente las contribuciones $\boldsymbol{t_{cont}}$ y $\boldsymbol{q_{cont}}$?
+
+En análisis multivariable de procesos fisicoquímicos, las causas-raíz no se deducen ni se proponen: **se identifican matemáticamente**.
+
+Toda observación multivariable anómala se proyecta primero sobre los **grados de libertad reales del sistema**, es decir, sobre sus **modos propios**. En ese espacio, la desviación queda expresada en términos de *scores* normalizados por la varianza natural capturada por los valores eigen:
+
+###  $$\boldsymbol{\lambda_{1}, \lambda_{2}, \lambda_{3}, \ldots, \lambda_{a}}$$
+
+diagonalizados en la matriz $\boldsymbol{\Lambda}$:
+
+### $$
+\boldsymbol{\Lambda} =
+\begin{bmatrix}
+\lambda_{1} & 0 & 0  & \cdots & 0 \\
+0 & \lambda_{2}  & 0 & \cdots & 0 \\
+0 & 0 & \lambda_{3}  & \cdots & 0 \\
+\vdots &  \vdots &  \vdots & \ddots & \vdots \\
+0 & 0  & \cdots & \cdots & \lambda_{a}
+\end{bmatrix}
+$$
+
+y posteriormente **retraducidos a la dimensión material** mediante los vectores propios:
+
+###  $$\boldsymbol{p_{1}, p_{2}, p_{3}, \ldots, p_{a}}$$  
+
+organizados en la matriz $\boldsymbol{P}$:
+
+### $$
+\boldsymbol{P} =
+\begin{bmatrix}
+p_{11} & p_{12} & p_{13} & \cdots & p_{1a} \\
+p_{21} & p_{22} & p_{23} & \cdots & p_{2a} \\
+p_{31} & p_{32} & p_{33} & \cdots & p_{3a} \\
+p_{41} & p_{42} & p_{43} & \cdots & p_{4a} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+p_{m1} & p_{m2} & p_{m3} & \cdots & p_{ma}
+\end{bmatrix}
+$$
+
+Este encadenamiento (proyección, normalización por varianza y retorno al espacio físico) es una consecuencia directa del álgebra lineal aplicada a los grados de libertad efectivos del sistema, y conduce de forma natural a las **contribuciones** $\boldsymbol{t_{cont}}$:
+
+###  $$\mathbf{t}_{\text{cont}} \;=\; \hat{\mathbf{t}}_p \, \boldsymbol{\Lambda}^{-1/2} \, \mathbf{P}^\top$$ 
+
+### **¿Para qué nos sirve esta expresión?**
+
+**Las contribuciones t y q son la esencia del ANÁLISIS CAUSA-RAÍZ con base científica.**
+
+Todo ocurre dentro del software, pero el beneficio es este: el vector resultante $\boldsymbol{t_{cont}}$ indicará, visulamente, **cuál o cuáles fueron las variables causantes de la no conformidad detectada, en un lote o en un instante de tiempo.**
+
+Por eso es tan valiosa. Nuestro software las ordena de forma descendente, de izquierda a derecha.
+
+Esta expresión no es interpretativa ni heurística. Es una **definición operativa** que cuantifica cómo cada variable fisicoquímica participa, de forma individual, en una desviación colectiva, **a través de los modos retenidos**, ponderados por sus autovalores.
+
+Dichos autovalores, como bien sabemos, representan la varianza contenida en cada uno de los **grados de libertad efectivos** del sistema. Y a su vez, cada grado de libertad concentra un componente de los modos de vibración de cada variable. Por eso **"descomponemos los componentes"**, de su forma condensada a su forma individual. El propósito es obtener e identificar la **constribución t y q**. ¿Para qué? Lo que queremos es saber el origen y causa de una no conformidad multivariable. La respuesta de un problema de no conformidad viene allí.
+
+Así, todo aquello que **no puede ser explicado por dichos modos** queda necesariamente fuera de ese subespacio. Lo que queda fuera del subespacio, por definición, es el residuo de las **contribuciones** $\boldsymbol{q_{cont}}$ y que emergen directamente como:
+
+###  $$\mathbf{q}_{\text{cont}} \;=\; \hat{\mathbf{e}}_p$$​ 
+
+Aquí no existe proyección ni reescalamiento. Cada variable contribuye exactamente en la medida en que introduce información **ajena al subespacio físico del proceso**.
+
+### Diagnóstico de Causas-Raíz
+
+Como el lector puede darse cuenta, seguirle la pista a la variación confinada en sistemas complejos con propósitos de validación y control estadístico, no es imposible, pero sí es una tarea intrincada. El autor ha hecho lo más que ha podido para traerle al lector algo de claridad, pero la labor no puede ser eshaustiva ni más detallada. Los libros de texto son para eso.
+
+Lo que sí hemos hecho deliberadamente en este espacio, es romper con la solemnidad del estilo discursivo académico, sin sacrificar rigor matemático. El propósito es enteramente didáctico. Si este trabajo cumplió su propósito, el autor confía en que aquel lector que tenga interés en profundizar, podrá hacerlo ahora con un poco de ventaja didáctica. Si así sucede, este material habrá sido exitoso. De lo contrario, esta redacción fracasó y la culpa es totalmente del autor.
+
+En cualqueir caso, el mayor valor agregado queda en la identificación legítima de causas, cuando los datos indican la presencia de anomalías antes de que sea demasiado tarde.
+
+Esta es la razón por la cual las contribuciones $\boldsymbol{t_{cont}}$ y $\boldsymbol{q_{cont}}$ constituyen el núcleo del diagnóstico de causas raíz en MSPC fisicoquímico. No son gráficos auxiliares ni explicaciones a posteriori: son la **traducción directa de los grados de libertad capturados por el análisis eigen, pero ahora de vuelta a la realidad material del proceso de transformación**.
+
+Lo que el lector verá a continuación son cinco ejemplos de estas contribuciones aplicadas a la varianza de los lotes de vino *Grignolino* del conjunto de Forina, tal como deben aparecer durante el **monitoreo real** y la **consulta técnica de datos históricos**: como evidencia cuantitativa, físicamente interpretable, directamente accionable y auditable.
+
+Los gráficos presentados ilustran el **nivel de calidad interactiva** que nuestro sistema puede ofrecer a su organización durante la operación diaria y el análisis experto.
+
+Le invitamos a explorar los 5 ejemplos: cada uno expone las causas-raíz en forma gráfica, por orden de magnitud de contribución de izquierda a derecha, reordenando e identificando en cada caso las principales variables causantes de la no conformidad y la mayor variación.
+
+Las contribuciones-t se ilustran en color verde y las contribuiciones-q en color amarillo.
+
+### Conclusión 
+
+Como es natural, estos métodos solo satisfacen a especialistas exigentes y profesionales comprometidos con el aseguramiento de la calidad.
+
+Nuestro objetivo con toda la exposición en este sitio, ha sido que el proceso multivariable deje de ser una "*nube de datos*" y MSPC deje de ser una "*caja negra*", para convertirse en un sistema de diagnóstico que señala, sin ambigüedad, qué variable rompió el equilibrio.
+
+Esperamos haberlo logrado.

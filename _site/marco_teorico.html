@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Q.I. Víctor Soto Del Toro">
+
+<title>La Relación Entre Fisicoquímica Industrial Y Estadística Multivariable</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-80e8053d18074af87c7f30c83ce2475b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="https://www.linkedin.com/in/qivictorsotodeltoro/" class="navbar-brand navbar-brand-logo">
+    <img src="./images/logo.png" alt="Analítica Multivariable – por Víctor Soto" class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./introduccion.html"> 
+<span class="menu-text">¿Análisis Multivariable para Procesos Industriales?</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./marco_teorico.html" aria-current="page"> 
+<span class="menu-text">Control Estadístico de Procesos Fisicoquímicos</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./metodologiayfundamentos.html"> 
+<span class="menu-text">Metodología y Fundamentos</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./referencias.html"> 
+<span class="menu-text">Referencias y Fuentes</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./acerca.html"> 
+<span class="menu-text">Acerca de</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">La Relación Entre Fisicoquímica Industrial Y Estadística Multivariable</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Inicio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./index2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Diagnóstico Compuesto</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./parcoord.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2.1 Gráfico Coordinado Paralelo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./index3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Diagnóstico T² y Q</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./T2_Q.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3.1 Exploración General T² vs Q</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./T2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3.2 Hotelling T²</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Q.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3.3 Jackson Q / SPE</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./index4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4. Contribuciones t y q</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contribuciones1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4.1 Observación 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contribuciones2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4.2 Observación 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contribuciones3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4.3 Observación 3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contribuciones4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4.4 Observación 4</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contribuciones5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4.5 Observación 5</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page-right" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">La Relación Entre Fisicoquímica Industrial Y Estadística Multivariable</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-right">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Q.I. Víctor Soto Del Toro </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Este espacio está dedicado a las y los profesionales de la química aplicada a procesos industriales que enfrentan, de manera cotidiana, tres responsabilidades fundamentales:</p>
+<ul>
+<li><p>Obtener grandes volúmenes de datos de medición provenientes de múltiples variables del proceso y organizarlos en tablas o bases de datos.</p></li>
+<li><p>Tomar decisiones técnicas y operativas a partir de esos datos.</p></li>
+<li><p>Asegurar que dichas decisiones sean explicables y defendibles en términos científicamente verificables.</p></li>
+</ul>
+<p>Nada de lo que aquí se presenta es una idea original. Todo está ampliamente documentado en la literatura científica y técnica, y el lector podrá consultar y verificar cada afirmación. El objetivo de este trabajo es únicamente condensar, ordenar y hacer operativa la escuela de pensamiento de la quimiometría aplicada a procesos fisicoquímicos de transformación.</p>
+<section id="qué-es-la-quimiometría" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="qué-es-la-quimiometría"><span class="header-section-number">1</span> ¿Qué es la quimiometría?</h2>
+<p>El término <em>quimiometría</em> fue acuñado hace varias décadas para describir una forma particular de analizar datos fisicoquímicos, en la que se combinan de manera explícita el pensamiento estadístico y el pensamiento químico.</p>
+<p>Permítase al lector aceptar la siguiente <strong>definición operativa (no académica)</strong>:</p>
+<p><strong>La quimiometría es la aplicación de métodos estadísticos multivariables a modelos empíricos construidos a partir de datos fisicoquímicos.</strong></p>
+<p>El énfasis en la <em>modelación empírica</em> indica una preferencia deliberada por modelos derivados de datos estocásticos observados, en contraste con modelos puramente deterministas deducidos exclusivamente de teorías fisicoquímicas formales.</p>
+<p>Esto no implica que el conocimiento químico previo ni las teorías fundamentales sean ignoradas o relegadas. Significa, simplemente, que no constituyen por sí solas una base suficiente para la construcción de modelos operativos, especialmente cuando el sistema real exhibe complejidad, variabilidad inherente e interacciones no previstas por la teoría de sistemas ideales ni por enfoques estrictamente deterministas.</p>
+<section id="poder-y-riesgos-de-la-quimiometría" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="poder-y-riesgos-de-la-quimiometría"><span class="header-section-number">1.1</span> Poder y riesgos de la quimiometría</h3>
+<p>La combinación de modelación empírica y análisis estadístico multivariable convierte a la quimiometría en una disciplina extraordinariamente poderosa, aunque no exenta de riesgos.</p>
+<p>Su principal fortaleza radica en la capacidad de modelar sistemas complejos y parcialmente desconocidos sin quedar limitada por supuestos teóricos rígidos. Esta característica representa una ventaja decisiva cuando el proceso presenta desviaciones significativas, interacciones no anticipadas o comportamientos que nunca fueron contemplados dentro de un marco estrictamente determinista.</p>
+<p>No obstante, este poder analítico conlleva un costo metodológico bien definido:</p>
+<ul>
+<li><p>La mayoría de los métodos multivariables requieren grandes volúmenes de datos confiables, representativos y de calidad consistente, así como una selección cuidadosa y sistemática de las variables que conforman el sistema analítico.</p></li>
+<li><p>Los modelos empíricos solo pueden aplicarse con seguridad dentro del dominio de condiciones efectivamente representado en los datos de calibración; cualquier intento de extrapolación fuera de ese dominio constituye una práctica inherentemente riesgosa.</p></li>
+<li><p>La disponibilidad simultánea de múltiples variables de entrada y de respuesta introduce una fuerte tentación al sobreajuste, particularmente cuando se persiguen resultados aparentemente “óptimos” que carecen de robustez fuera del conjunto de datos utilizado para construir el modelo.</p></li>
+<li><p>Finalmente, los modelos multivariables suelen presentar dificultades de interpretación, especialmente cuando se comunican a audiencias con formación limitada en matemáticas, estadística o análisis multivariable.</p></li>
+</ul>
+<p>Por estas razones, la quimiometría no es una herramienta trivial ni automática. Su aplicación exige criterio científico, disciplina metodológica y un alto grado de responsabilidad profesional.</p>
+</section>
+<section id="un-poco-de-contexto-histórico" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="un-poco-de-contexto-histórico"><span class="header-section-number">1.2</span> Un poco de contexto histórico</h3>
+<p>El uso de la estadística multivariable con el propósito de analizar y comprender datos multivariables se remonta a la década de 1930, con los trabajos pioneros de Harold Hotelling. Aunque estas metodologías encontraron aplicaciones tempranas en diversos campos científicos, su adopción dentro de la química fue relativamente lenta.</p>
+<p>La quimiometría como disciplina no se consolidó sino hasta las décadas de 1960 y 1970. Durante los años ochenta y noventa, su aplicación se concentró principalmente en el análisis de datos provenientes de tecnologías espectroscópicas, periodo en el cual se establecieron las bases metodológicas que hoy sustentan el análisis multivariable moderno en química industrial y en la fabricación de productos de consumo.</p>
+<p>En la actualidad, las aplicaciones de la quimiometría se han extendido de manera significativa hacia la Tecnología Analítica de Procesos (Process Analytical Technology, PAT) y hacia una amplia variedad de industrias de transformación fisicoquímica. Sin embargo, muchas de estas aplicaciones permanecen escasamente documentadas en la literatura abierta y en artículos de investigación académica, principalmente por razones de confidencialidad industrial, aunque existe un motivo adicional.</p>
+<p>Al tratarse de procedimientos estandarizados definidos desde el siglo pasado, ni el sector académico ni el sector industrial suelen considerarlos como fuentes de novedad metodológica dignas de mayor divulgación. Su valor no reside en la innovación conceptual, sino en su madurez, estabilidad y eficacia probada.</p>
+<p>A pesar de esta baja visibilidad editorial y de su aparente obsolescencia metodológica, la quimiometría representa hoy la forma especializada y prevaleciente del análisis estadístico multivariable aplicada al monitoreo y diagnóstico de procesos fisicoquímicos. Su adopción es particularmente relevante para científicos analíticos e ingenieros que buscan sostener la mejora continua mediante procedimientos cada vez más rigurosos, trazables y confiables.</p>
+<p>Para ilustrarlo: aunque las matemáticas y la química cuentan con siglos de desarrollo, su valor no radica en la novedad técnica ni en modas metodológicas pasajeras, sino en su estabilidad histórica y en su capacidad comprobada para ofrecer el mayor grado posible de transparencia cuantitativa. Esta cualidad resulta esencial en sistemas y procedimientos analíticos que deben procesar volúmenes crecientes de información numérica, no necesariamente porque los procesos sean más complejos, sino porque las exigencias de control, validación y escrutinio se han vuelto progresivamente más estrictas.</p>
+</section>
+</section>
+<section id="algo-de-filosofía-industrial" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="algo-de-filosofía-industrial"><span class="header-section-number">2</span> Algo de filosofía industrial</h2>
+<p>La quimiometría no es una ciencia: es una tecnología. Y, además, una tecnología singular.</p>
+<p>La mayoría de las tecnologías de base científica siguen una trayectoria relativamente clara: se conciben y desarrollan en instituciones académicas, posteriormente se transfieren a la industria y, finalmente, son adaptadas para aplicaciones prácticas por ingenieros y científicos industriales.</p>
+<p>La quimiometría siguió un camino distinto.</p>
+<p>En su desarrollo, la industria desempeñó un papel central. Muchas de sus herramientas no surgieron de la búsqueda de elegancia teórica ni de formalismo académico, sino de una necesidad urgente de aplicación práctica en contextos reales de producción. Su evolución estuvo guiada por problemas operativos concretos: variabilidad, complejidad, correlación entre variables y necesidad de diagnóstico confiable.</p>
+<p>Esta característica ha llevado a que algunas instituciones académicas hayan minimizado o eclipsado la quimiometría, argumentando que carece de fundamentos teóricos sólidos o que viola principios establecidos del análisis estadístico clásico. Sin embargo, este juicio contrasta con un hecho difícil de ignorar: la quimiometría demuestra diariamente su eficacia en una amplia gama de aplicaciones industriales, donde la validación no ocurre en el aula, sino en la operación continua de procesos industriales que producen los bienes que todos utilizamos.</p>
+<p>Bajo la enseñanza de Svante Wold (nieto del ilustre Svante Arrhenius), Martens y Næs ofrecen una definición particularmente esclarecedora al describir la quimiometría como “una combinación del pensamiento químico y el pensamiento estadístico”. Esta síntesis no es trivial y explica tanto su potencia como las tensiones que genera.</p>
+<p>Desde esta perspectiva, los especialistas en estadística pura suelen ser plenamente conscientes de las capacidades y limitaciones formales de las herramientas estadísticas. Sin embargo, con frecuencia permanecen confinados a estructuras metodológicas rígidas, en las que el conocimiento químico del sistema desempeña un papel marginal. Para el estadístico puro, el diseño experimental, la modelación de datos o la interpretación de resultados rara vez incorporan aportes sustantivos de la fisicoquímica del proceso.</p>
+<p>Por otro lado, los químicos e ingenieros de procesos no siempre dominan las limitaciones teóricas del diseño experimental o del análisis estadístico, pero poseen el conocimiento fisicoquímico profundo necesario para diseñar experimentos relevantes, reconocer comportamientos anómalos, proponer hipótesis que ahorren tiempo y recursos, anticipar la plausibilidad física de los resultados y, en muchos casos, prevenir accidentes y siniestros.</p>
+<p>La experiencia ha demostrado que ninguno de estos enfoques es suficiente por sí solo. El pensamiento químico y el pensamiento estadístico deben coexistir y colaborar para producir modelos que no solo sean matemáticamente correctos, sino útiles, interpretables y operativamente válidos.</p>
+<p>La naturaleza empírica y eminentemente práctica de la quimiometría ha llevado a algunos observadores externos a concluir, de manera errónea, que quienes la practican no comprenden las herramientas que utilizan ni los modelos que desarrollan. En realidad, ocurre exactamente lo contrario: la quimiometría exige una comprensión simultánea del sistema fisicoquímico y del marco estadístico, precisamente porque sus resultados están obligados, por leyes, normas y contratos, a sostenerse frente a la realidad material del proceso y frente al beneficio que debe rendirle al consumidor.</p>
+<p>Si los métodos quimiométricos fueran insuficientes, inaplicables o innecesarios, las no conformidades se manifestarían a simple vista, sin que los datos de monitoreo tuvieran que revelarlas.</p>
+<p>El desenlace sería inevitable: el cliente terminaría rechazando el producto o, peor aún, aceptándolo, pagándolo y consumiéndolo, para después quejarse o sufrir los efectos adversos de un producto que aparenta ser conforme, pero que resulta defectuoso cuando se analiza bajo el estricto escrutinio de un microscopio matemático.</p>
+<p>La quimiometría (y sus versiones adaptadas a datos de proceso) no existe para detectar defectos obvios y evidentes. En ese escenario, su aplicación sería irrelevante.</p>
+<p>Su propósito es otro: detectar desviaciones sutiles, cuando las diferencias son pequeñas, no evidentes y estadísticamente invisibles para los métodos convencionales de análisis univariable, pero marcadamente obvias para los métodos multivariables.</p>
+<section id="por-qué-la-quimiometría-puede-evitar-controversias-cuando-los-métodos-estadísticos-clásicos-no-son-suficientes" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="por-qué-la-quimiometría-puede-evitar-controversias-cuando-los-métodos-estadísticos-clásicos-no-son-suficientes"><span class="header-section-number">2.1</span> ¿Por qué la quimiometría puede evitar controversias cuando los métodos estadísticos clásicos no son suficientes?</h3>
+<p>La razón es simple: la información crítica (<strong>variaciones pequeñas pero potencialmente desastrosas</strong>) no reside en las variables aisladas, sino en la interacción, correlación, covarianza y multicolinealidad que con frecuencia permanecen ocultas. Estas estructuras de dependencia existen entre las variables operativas del proceso (variables de entrada) y, de manera inseparable, con las características de calidad del producto (variables de salida).</p>
+<p>Desde hace décadas, la práctica de la química industrial ha reconocido que los métodos estadísticos clásicos basados en el análisis univariable (e incluso muchos enfoques multivariables convencionales o superficialmente “modernizados”) no son capaces de detectar ni procesar estas estructuras de variación de forma que produzcan resultados simultáneamente confiables, interpretables y accionables.</p>
+<p>El problema no es la falta de datos. El problema es la incapacidad de dichos métodos para representar adecuadamente la <strong>geometría real</strong> de un sistema multivariable.</p>
+<p>La quimiometría surge precisamente para atender esta limitación operativa fundamental. Su propósito no es reemplazar el juicio químico ni imponer formalismos matemáticos innecesarios, sino proporcionar un marco analítico capaz de capturar, cuantificar y vigilar las relaciones vinculantes entre múltiples variables que evolucionan de manera conjunta.</p>
+<p>Todo químico lo sabe: el cambio de estado de las variables nunca ocurre de forma independiente. Por ello, el supuesto estadístico de independencia rara vez (si es que alguna vez) se cumple en sistemas fisicoquímicos reales. Esperar a que se cumpla solo para que los métodos univariables puedan aplicarse no es rigor metodológico, sino una concesión artificial a modelos que no describen la realidad.</p>
+<p>Lo mismo ocurre con la autocorrelación. La cinética química es una propiedad intrínseca de toda transformación de la materia sometida a cualquier forma de energía, sencillamente porque (a excepción de las reacciones instantáneas), los procesos químicos industriales, además de ser multivariables, ocurren en el tiempo. Ignorar esta dimensión equivale a renunciar a una parte esencial de la información del sistema.</p>
+<p>El trabajo de MacGregor aborda esta necesidad de manera sistemática y rigurosa. Su contribución representa la culminación operativa de una línea intelectual que Pearson inició, Hotelling refinó, Wold redefinió y Martens implementó en contextos industriales reales.</p>
+<p>Un aspecto técnico que gobierna este método se puede resumir así: <strong>sin compresión no hay control.</strong></p>
+<p>Más adelante veremos qué significa eso, pero desde esta perspectiva, la quimiometría aplicada a procesos de transformación no solo mejora la detección temprana de desviaciones: <strong>reduce controversias</strong>. En todos los casos, el objetivo es uno solo: <strong>producir un procedimiento de control.</strong> Para que sea exitoso los datos deben ser <strong>“comprimibles”.</strong> De lo contrario, el control no es posible.</p>
+<p>Al fundamentar las decisiones en modelos multivariables trazables y métricas bien definidas, se eliminan interpretaciones ambiguas, discusiones subjetivas y juicios basados en observaciones parciales o aisladas. El resultado es un mecanismo de decisión que puede ser explicado, defendido y auditado.</p>
+<p>En este sentido, la misión de este sitio es clara: habilitar a los usuarios de métodos multivariables para comprender estas herramientas con mayor profundidad y aplicarlas con mayor eficacia, particularmente en el control estadístico y el diagnóstico de procesos fisicoquímicos multivariables, donde la objetividad y la transparencia no son opcionales, sino requisitos operativos.</p>
+</section>
+</section>
+<section id="conclusión" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="conclusión"><span class="header-section-number">3</span> Conclusión</h2>
+<p>Quien haya llegado hasta aquí con atención probablemente pertenece a uno de dos grupos:</p>
+<ul>
+<li><p>Quienes están comenzando su trayectoria profesional en la ciencia y la ingeniería de procesos fisicoquímicos, y</p></li>
+<li><p>Quienes, tras años de experiencia, sabían que este lenguaje existía, pero rara vez se expone con claridad operativa.</p></li>
+</ul>
+<p>Para el científico y el ingeniero joven, el mensaje es directo aunque no siempre evidente: lo importante no es <em>“analizar datos”</em>, sino <strong>obtener respuestas</strong>. Hacerlo correctamente exige aceptar que la variabilidad no es un error ni un estorbo, sino la única fuente legítima de información sobre la estabilidad real de un sistema fisicoquímico.</p>
+<p>Aprender quimiometría no es aprender un conjunto de técnicas. Es adquirir una forma de pensar que permite distinguir entre ruido, estructura y riesgo operativo antes de que el problema se manifieste en el producto, en el cliente o en el mercado.</p>
+<p>Para el profesional senior, el valor es distinto pero igual de claro. Nada de lo aquí expuesto es novedoso en el sentido académico y, precisamente por eso, es relevante. Estas metodologías han sobrevivido décadas de escrutinio porque funcionan bajo condiciones reales: con datos imperfectos, restricciones operativas y consecuencias contractuales. Reconocerlas no es un acto de nostalgia metodológica, sino de rigor profesional: es elegir herramientas cuya trazabilidad matemática permite sostener decisiones cuando más se necesita hacerlo, sin depender de teorías académicas formuladas bajo supuestos ideales.</p>
+<p>Este texto no pretende convencer a quien busca atajos, resultados rápidos o modelos que “funcionen” sin ser comprendidos. Tampoco dialoga con la necesidad de novedad por sí misma, ni pretende ajustarse a preceptos deterministas que colapsan frente a la realidad estocástica de fenómenos gobernados por la entropía, que es, en última instancia, la única fuente física cuyos efectos sobre la varianza se buscan controlar.</p>
+<p>La quimiometría aplicada al control de procesos que producen productos no compite por atención, novedad ni popularidad. Compite por <strong>responsabilidad, seriedad y eficacia</strong>. En entornos industriales, esa responsabilidad se mide en decisiones defendibles, procesos estables, productos conformes y dinero perdido o ganado. Observación tras observación. Lote por lote. Cliente por cliente. Todos los días.</p>
+<p>Quien encuentre aquí un marco útil para sus propósitos encontrará también una invitación implícita: profundizar, cuestionar con rigor, estudiar las fuentes originales y, sobre todo, aplicar estos métodos con criterio.</p>
+<p>Quien, por el contrario, haya llegado hasta aquí sin la intención de aprender ni crecer, pero aun así persista, difícilmente encontrará algo de valor: es evidente que está buscando otra cosa.</p>
+<p>Este espacio existe para quienes ya entienden (o están dispuestos a aprender) que:</p>
+<ul>
+<li><p>la calidad no se declara, se demuestra;</p></li>
+<li><p>los datos no se <em>analizan</em>, se <strong>interrogan</strong>; y</p></li>
+<li><p>la estadística multivariable, bien utilizada, no es un accesorio académico, sino una herramienta de trabajo rutinaria que sirve y protege los intereses del negocio.</p></li>
+</ul>
+<p>Esta lectura está dirigida al científico industrial y al ingeniero de procesos, junior y senior, que están más interesados en <strong>resultados defendibles y procedimientos maduros (probados por la experiencia y el tiempo)</strong> que en modas académicas o nuevas promesas metodológicas que, aunque suenen atractivas, apenas están en gestación o incubación.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

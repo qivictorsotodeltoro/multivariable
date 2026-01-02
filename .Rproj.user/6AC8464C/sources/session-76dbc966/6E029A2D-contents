@@ -1,0 +1,112 @@
+---
+title: "3. Introducción al Análisis Multivariable para MSPC de Datos Fisicoquímicos"
+---
+
+## Antes de comenzar: ¿por qué el control multivariable es inevitable?
+
+Lo que el lector está a punto de explorar **no es Control Estadístico de Procesos (SPC) tradicional**.
+
+Aunque el objetivo general permanece (vigilar, comprender y controlar un proceso), el Monitoreo y Control Estadístico Multivariable de Procesos (MSPC) responde a una realidad distinta: **los procesos fisicoquímicos reales no son univariables, ni independientes, ni operativamente lineales**, como el SPC clásico presupone.
+
+En sistemas industriales y ambientales reales, las variables están acopladas. Comparten fuentes de variabilidad, se compensan mutuamente y evolucionan como un conjunto. Tratar cada variable por separado no es una simplificación técnica inocente: **es una renuncia explícita a la estructura informacional del sistema**. Y eso tiene consecuencias operativas, diagnósticas y económicas.
+
+En este contexto, el uso exclusivo de la desviación estándar univariable, $\sigma$, deja de ser suficiente.\
+El objeto matemático correcto pasa a ser: $\boldsymbol{\Sigma}$, la **matriz de covarianzas**, que describe cómo el sistema completo fluctúa, se organiza y mantiene coherencia estadística.
+
+Y así tenemos:
+
+### $$
+\boldsymbol{\sigma} \: univariable \; vs \; \boldsymbol{\Sigma} \; multivariable
+$$
+
+## SPC: varianzas aisladas
+
+En SPC clásico, cada variable del proceso se analiza por separado. Su variabilidad se describe de manera independiente mediante varianzas univariables:
+
+### $$\boldsymbol{\sigma^2_1, \; \sigma^2_2, \; \sigma^2_3, \;  ..., \;  \sigma^2_m}
+$$
+
+Cada $\sigma_i^2$​ existe de forma aislada. Bajo esta formulación, **las relaciones entre variables simplemente no forman parte del modelo ni del procedimiento de control**.
+
+## MSPC: estructura multivariable
+
+En MSPC, esta visión deja de ser suficiente.
+
+Las observaciones del proceso se organizan primero en una matriz de datos:
+
+### $$
+\boldsymbol{X} =
+\begin{bmatrix}
+x_{11} & x_{12}  & \cdots & x_{1m} \\
+x_{21} & x_{22}  & \cdots & x_{2m} \\
+\vdots &  \vdots & \ddots & \vdots \\
+x_{n1} & x_{n2}  & \cdots & x_{nm}
+\end{bmatrix}
+$$
+
+Cada fila representa un lote o un instante temporal del proceso; cada columna, una variable fisicoquímica.
+
+(Si los datos son secuenciales en el tiempo, el paso previo es el desdoblamiento; en ese caso se parte de un tensor. El análisis eigen posterior es el mismo.)
+
+## El objeto central: la matriz de covarianzas
+
+A partir de la matriz de datos emerge el objeto central del MSPC:
+
+### $$
+\boldsymbol{\Sigma} =
+\begin{bmatrix}
+\sigma_{11} & \sigma_{12}  & \cdots & \sigma_{1m} \\
+\sigma_{21} & \sigma_{22}  & \cdots & \sigma_{2m} \\
+\vdots &  \vdots & \ddots & \vdots \\
+\sigma_{n1} & \sigma_{n2}  & \cdots & \sigma_{nm}
+\end{bmatrix}
+$$
+
+La matriz de covarianzas contiene **todas las varianzas individuales y todas las covarianzas cruzadas del sistema**.
+
+Aquí ocurre el cambio conceptual clave:
+
+-   SPC trabaja únicamente con varianzas.
+
+-   MSPC trabaja con **varianzas y covarianzas simultáneamente**.
+
+Este hecho impone un requisito metodológico no negociable: **el marco matemático correcto es el álgebra lineal**.
+
+Por ello, la calidad de la información diagnóstica que ofrecen SPC y MSPC **no es comparable**.
+
+## T² y Q surgen de Σ 
+
+De la matriz $\boldsymbol{\Sigma}$ surgen de forma natural las distancias multivariables $T^2$ y $Q$, y es con ellas que se construyen límites de control estadísticamente válidos.
+
+Esto no es una preferencia metodológica. \
+Es una consecuencia directa de la naturaleza física, química y matemática del proceso.
+
+Por esta razón:
+
+-   **No existen límites ±1σ, ±2σ o ±3σ en MSPC**.
+
+-   No se evalúan variables de forma aislada.
+
+-   Se analizan **distancias estadísticas**, **subespacios latentes** y **consistencia estructural**.
+
+Los límites no son empíricos ni heurísticos ni ideológicos: **se derivan de distribuciones estadísticas bien definidas bajo supuestos explícitos**.
+
+## Profesionalismo técnico
+
+El profesional que adopta MSPC no está “complicando” el control estadístico. \
+Está **asumiendo su responsabilidad técnica** frente a procesos que ya no admiten aproximaciones parciales.
+
+La diferencia no es académica. \
+Es **operativa, diagnóstica y económica**.
+
+Si el proceso es multivariable pero el método no lo es, el control será inevitablemente incompleto. En ese escenario, la organización opera con información parcial y queda expuesta a pérdidas sistemáticas, muchas veces invisibles hasta que ya son irreversibles.
+
+La materia, la energía y los procesos de transformación no se comportan como listas de variables independientes. Insistir en controlarlos así conduce, tarde o temprano, a diagnósticos incompletos, acciones correctivas afortunadas y una falsa sensación de control.
+
+Por eso, adoptar MSPC no es un acto de sofisticación intelectual o vanidad personal. \
+Es un acto de **madurez profesional, emancipación técnica y mejora continua auténtica**.
+
+En última instancia, asumir que una sola variable fisicoquímica (aislada, incomunicada y desconectada del resto del sistema) sea capaz de explicar el comportamiento de un proceso complejo **no es una posición técnicamente defendible**.
+
+En el mejor de los casos, esta postura es sencillamente insuficiente.\
+En el peor, es **ingenua**.

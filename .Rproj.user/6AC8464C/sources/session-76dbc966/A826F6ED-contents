@@ -1,0 +1,176 @@
+---
+title: "¿Cómo Investigar Datos Continuos Multivariables?"
+---
+
+## Análisis Gráfico de Datos Multivariables
+
+Las **distribuciones de probabilidad** son herramientas naturales para explorar el comportamiento de **datos univariables**.
+
+Un histograma acompañado de su curva de densidad suelen ser suficientes cuando solo hay **una variable** en juego.
+
+```{r}
+
+#| echo: false
+#| warning: false
+#| message: false
+#| results: hide
+#| cache: false
+
+library(plotly)
+
+set.seed(123)
+x <- rnorm(1000, mean = 50, sd = 10)
+
+# Estimación de densidad
+dens <- density(x)
+
+plot_ly() %>%
+  add_histogram(
+    x = x,
+    histnorm = "probability density",
+    name = "Histograma",
+    opacity = 0.6,
+    marker = list(color = "#265129")
+  ) %>%
+  add_lines(
+    x = dens$x,
+    y = dens$y,
+    name = "Densidad",
+    line = list(color = "black", width = 3)
+  ) %>%
+  layout(
+    title = "Datos univariables: distribucion de probabilidad",
+    xaxis = list(title = "Variable X"),
+    yaxis = list(title = "Densidad")
+  )
+
+```
+
+Los **scatter plots** (gráficos de dispersión), por su parte, son excelentes cuando trabajamos con **dos variables continuas**. Incluso pueden extenderse a tres dimensiones, aunque con claras limitaciones visuales e interpretativas.
+
+```{r}
+
+#| echo: false
+#| warning: false
+#| message: false
+#| results: hide
+#| cache: false
+#| 
+library(plotly)
+
+set.seed(123)
+
+# Datos bivariados
+x <- rnorm(1000, mean = 50, sd = 10)
+y <- 0.6 * x + rnorm(1000, sd = 5)
+
+plot_ly(
+  x = x,
+  y = y,
+  type = "scatter",
+  mode = "markers",
+  marker = list(
+    color = "#265129",
+    size = 7,
+    opacity = 0.6
+  )
+) %>%
+  layout(
+    title = "Datos bivariados: grafico de dispersion",
+    xaxis = list(title = "Variable X"),
+    yaxis = list(title = "Variable Y")
+  )
+
+```
+
+El problema analítico aparece cuando el sistema **no es de dos ni de tres variables**, sino de muchas. Tal y como ocurre en la vida real.
+
+### El límite de los gráficos tradicionales
+
+En un scatter plot:
+
+-   los ejes *x* e *y* (y *z* en 3D) son **ortogonales**
+
+-   cada gráfico solo puede mostrar **una relación a la vez**
+
+Esto funciona bien en baja dimensión, pero **no escala** cuando el proceso tiene múltiples variables correlacionadas, como ocurre en casi cualquier sistema real.
+
+### Coordenadas paralelas: otra geometría para otros problemas
+
+Para datos continuos multivariables, una alternativa poderosa son los **gráficos de coordenadas paralelas**.
+
+En lugar de ejes perpendiculares, **todos los ejes son paralelos entre sí**.
+
+-   Cada variable tiene su **propio eje vertical**
+
+-   Cada eje se escala normalmente entre su **mínimo y máximo**
+
+-   Un solo caso (una observación, una corrida, una formulación, un lote, un prototipo, una versión, una sección, un sitio, etc.) se representa como una **línea poligonal** que cruza todos los ejes
+
+Así, **una línea completa representa un estado del sistema completo**.
+
+Otras líneas representan otro estado del mismo sistema.
+
+### Un concepto antiguo, una herramienta moderna
+
+Esta idea no es nueva.
+
+-   **John Hartigan** ya hablaba en 1975 de *profile plots*, una idea esencialmente equivalente.
+
+-   **Alfred Inselberg** desarrolló formalmente la geometría de las coordenadas paralelas y la documentó extensamente en su libro de 2009.
+
+-   **William Wegman** fue uno de los primeros en proponer su uso sistemático para análisis de datos.
+
+La razón por la que estas ideas no prosperaron antes no fue conceptual, sino **computacional**. Hoy, con capacidad gráfica y cómputo moderno, estas visualizaciones son prácticas, interactivas y extremadamente informativas.
+
+Hartigan llamó a estas líneas **“perfiles”**, y ese nombre sigue siendo muy adecuado: cada línea es la **huella multivariable completa de un caso individual**.
+
+### ¿Por qué esto importa al ingeniero de procesos y al especialista en sostenibilidad?
+
+Un scatter plot responde a la pregunta:
+
+***¿Cómo se relacionan estas dos variables?***
+
+Un gráfico de coordenadas paralelas responde a otra más potente:
+
+***¿Cómo se comporta el sistema completo?***
+
+Cuando el objetivo no es solo observar, sino **entender, comparar, diagnosticar, controlar y validar**, la multivariabilidad deja de ser un problema visual o una "*aplicación para casos especiales*" y se convierte en lo que realmente es y para lo que fue concebida: **información estructurada que explica la totalidad del proceso a partir de datos completos**.
+
+Y ahí empieza el verdadero análisis multivariable.
+
+Hacer menos que eso significa ignorar información arbitrariamente.
+
+## Análisis gráfico y estadístico de datos multivariables en simultáneo
+
+El gráfico de la sección siguiente explora el conocido conjunto de datos multivariables de **Forina**, utilizado clásicamente para el estudio de la calidad y el origen de vinos italianos. En nuestro caso, nos centramos en vinos elaborados a partir de uvas **Grignolino**.
+
+Hemos elegido este ejemplo por una razón particular: los procesos de fermentación integran dos mundos en uno solo: el industrial y el ambiental.
+
+¿A qué nos referimos?
+
+Al tratarse de un producto que atiende intereses comerciales, la dimensión industrial exige ejercer control sobre la calidad. Sin embargo, en el caso específico de productos fermentados, intervienen también factores naturales que escapan, al menos parcialmente, a la capacidad de control del productor. Es aquí donde aparece la dimensión natural, orgánica y ambiental, introduciendo una mayor variabilidad que no necesariamente se traduce en imperfecciones, sino más bien en **variedad**.
+
+Aunque se desea cierta uniformidad en un producto que es natural y artesanal, también se esperan cambios. Después de todo, la naturaleza no es una máquina que fabrica en serie. Nos adaptamos, entonces, a esa variedad: productos que no son idénticos, pero que comparten más similitudes que diferencias. Y esas similitudes (y diferencias) pueden estudiarse, analizarse y validarse estadísticamente.
+
+El propósito de este tipo de estudio es certificar el origen del vino combinando información proveniente tanto de las propiedades fisicoquímicas del producto como de las características del suelo donde fue cultivada la uva. Naturalmente, este enfoque conduce a la realización de múltiples mediciones simultáneas y, por ende, a la generación de matrices de datos extensas y altamente correlacionadas.
+
+Desde luego, este es solo un ejemplo representativo. Las aplicaciones reales serán tan variadas como lo sean las necesidades del cliente.
+
+Lo que presentamos al lector en la siguiente sección es una demostración visual de cómo luce la información multivariable en la práctica: representada mediante **gráficos de coordenadas paralelas**, y enriquecida con los beneficios adicionales de la interactividad que la tecnología actual nos permite.
+
+Esta visualización se acompaña de los resultados de un análisis estadístico multivariable basado en la identificación de los **grados de libertad fundamentales del sistema**, los cuales se traducen en **distancias estadísticas** que responden únicamente a las dos preguntas que realmente importan en este contexto:
+
+-   ¿Qué vinos **sí** pertenecen al grupo?
+
+-   ¿Qué vinos **no** pertenecen al grupo?
+
+El objetivo es demasiado simple: queremos saber cuáles son semejenates y cuáles diferentes entre sí.
+
+En términos formalmente analíticos, lo que buscamos es el **outlier**: aquellas observaciones singulares que se apartan de los patrones que definen nuestro estándar de calibración a partir del conjunto histórico de datos (HDS). En el caso multivariable, este tipo de desviación no puede evaluarse variable por variable, sino que exige considerar simultáneamente **todas las contribuciones y correlaciones del sistema**.
+
+Hemos asignado colores asociados a los tres perfiles posibles que indican el estatus de cada caso individual dentro del espacio multivariable, de acuerdo con sus respectivas distancias estadísticas.
+
+Una vez procesados los datos y llevados al monitor, estos resultados pueden publicarse fácilmente en línea y reportarse como análisis multivariable de información histórica o como lotes de referencia utilizados para calibración y validación.
+
+Invitamos al lector a hacer clic en la sección 2.1 del menú izquierdo y explorar el gráfico de coordenadas paralelas y a experimentar de primera mano cómo la complejidad multivariable puede hacerse **visible, interpretable, operable y comunicable**.

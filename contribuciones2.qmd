@@ -1,0 +1,15 @@
+---
+title: "Contribuciones t y q - Observación 2"
+---
+
+```{r}
+
+library(plotly)
+p_t_cont <- readRDS("objects/p_t_cont2.rds")
+p_t_cont
+```
+
+```{r}
+p_q_cont <- readRDS("objects/p_q_cont2.rds")
+p_q_cont
+```

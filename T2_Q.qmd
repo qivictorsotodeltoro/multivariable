@@ -1,0 +1,134 @@
+---
+title: "Exploración Multivariada - T2 de Hotelling Vs Q de Jackson"
+---
+
+## Gráfico **T² vs Q**: diagnóstico multivariable en un solo plano
+
+El gráfico **T² (horizontal) vs Q (vertical)** es un gráfico de control que condensa el estado completo de un sistema multivariable, en un solo punto, por observación. Da igual si el proceso tiene 5 o 300 o más variables: aquí todas ellas se colapsan y resumen en solo dos distancias estadísticas.
+
+El principio fundamental es uno solo: queremos que todas las observaciones permanezcan cercanas al origen estadístico del sistema, definido por el modelo multivariable calibrado. Eso es lo más importante.
+
+Las desviaciones comienzan a manifestarse cuando cada observación se aleja del origen, tanto en T² como en Q.
+
+Por eso este gráfico de control es tan útil y simple de entender.
+
+Mueva el cursor, obtenga lecturas individuales, haga clic y arrastre el mouse, utilice *zoom in* y *zoom out*, y restaure la visualización utilizando las opciones del menú automático de exploración ubicado en la esquina superior derecha del gráfico.
+
+Los detalles analíticos vienen debajo del gráfico.
+
+```{r}
+#| label: T2Q-plot
+#| dependson: objects/p_T2Q.rds
+#| cache: false
+
+library(plotly)
+pT2Q <- readRDS("objects/p_T2Q.rds")
+pT2Q
+
+```
+
+### ¿Qué es **T²**?
+
+**T²** mide **qué tan lejos está una observación del centro del proceso**, **pero solo en las direcciones donde el sistema realmente varía**.
+
+Es una **distancia multivariable tipo Mahalanobis**, calculada en el subespacio dominante del sistema (eigenestructura).
+
+Un **T² alto** indica variación **estructurada**: el proceso se mueve de forma extrema, pero coherente con su física.
+
+### ¿Qué es **Q**?
+
+Q (Squared Prediction Error) mide lo que queda fuera del modelo, la variación no explicada por la estructura dominante.
+
+Un Q alto indica comportamiento anómalo: fallas, errores, perturbaciones externas o condiciones no modeladas.
+
+Q no mide intensidad del proceso; mide **incongruencia estructural**. \
+Para decirlo coloquialmente: **novedad, extrañeza, peculiaridad**.
+
+Y como estamos explorando un ejemplo de vinos:
+
+$\boldsymbol{T^2}$ elevado nos diría si un vino astringente es más astringente de lo habitual.
+
+$\boldsymbol{Q}$ elevado nos dice que, aunque un vino siga siendo astringente, si ahora presenta notas afrutadas y menor contenido alcohólico, ya no es el mismo vino. Es otro producto.
+
+Si $\boldsymbol{T^2}$ y $\boldsymbol{Q}$ son elevados, lo que ahora tenemos es un vino más astringente de lo habitual, además notas más afrutadas y menos alcohol: el cambio detectado es definitivamente radical.
+
+En una competencia de premiación, este mismo vino podría ser rechazado por no ajustarse al perfil histórico de la denominación, o bien celebrado precisamente por romper ese perfil y proponer uno nuevo.
+
+En el plano **T²– Q**, este tipo de observación aparece lejos del origen en ambas direcciones, señalando una **no conformidad multivariable clara** si ello resulta indeseable, o bien una **innovación diferenciadora**, si ese es el objetivo del sistema.
+
+En cualquiera de los dos casos, la **singularidad multivariable queda estadísticamente confirmada**.
+
+### ¿Cómo leer el plano de este gráfico de control?
+
+1.   **T² bajo / Q bajo** → Proceso bajo control
+
+2.   **T² alto / Q bajo** → Variación extrema pero estructurada
+
+3.   **T² bajo / Q alto** → Anomalía fuera del comportamiento normal
+
+4.   **T² alto / Q alto** → No conformidad multivariable clara
+
+Este gráfico **separa causas**, no solo detecta desviaciones.
+
+### Advertencia clave sobre los límites
+
+Aquí **no aplica** la lógica de **±1σ, ±2σ, ±3σ.**
+
+¿Por qué?
+
+Porque **T² y Q no son variables del proceso**. Son **distancias estadísticas cuadráticas multivariables**.
+
+Eso implica tres cosas fundamentales:
+
+-   No tienen signo
+
+-   No son simétricas
+
+-   **No existen límites inferiores**
+
+En análisis multivariable fisicoquímico **no existen límites inferiores:** solo existen límites superiores.
+
+### El origen de los límites
+
+Estos límites **no son heurísticos ni empíricos**.
+
+Al tratarse de distancias cuadráticas, sus umbrales **provienen necesariamente de distribuciones estadísticas conocidas**, bajo el supuesto de **normalidad multivariable** y calibración en **Fase I**:
+
+-   **T²**: distribuciones relacionadas con χ² o F
+
+-   **Q**: distribución derivada del espectro eigen del sistema
+
+Debemos tener presente que **T²** y **Q** no son nuestras variables: son los vehículos matemáticos que las contienen y las condensan.
+
+Esto solo puede ser así porque los límites **T² y Q** **responden a (y emergen de) la covarianza del sistema completo**. Y como sabemos, **todas las varianzas de cada variable en una matriz de covarianzas son cantidades cuadráticas por naturaleza y por lo tanto, positivas**.
+
+Por esa razón, intentar analizar **T²** o **Q** es incompatible con la lógica lineal-bidireccional de **±σ**. Insistir en ello es conceptualmente incorrecto y matemáticamente inválido.
+
+### Qué significa cruzar un límite
+
+Cruzar un límite de **T²** o **Q** **no significa que una observación “se vea rara”**.
+
+Significa que:
+
+Se ha violado una **hipótesis estadística explícita**, al nivel de significancia definido por el **error tipo I**.
+
+En ese momento, el sistema deja de estar bajo control estadístico y **las causas raíz deben investigarse**.
+
+No es intuición. \
+No es experiencia. \
+Es inferencia estadística formal.
+
+### La diferencia esencial
+
+-   SPC univariable solo hace esta pregunta: *¿una variable se salió de rango?*
+
+-   Control multivariable hace esta: *¿el sistema completo sigue comportándose como un sistema físico estable?*
+
+Por eso este gráfico **T²** - **Q** no es "*una buena idea*".
+
+Es **el mapa estándar del diagnóstico estadístico multivariable para procesos fisicoquímicos**.
+
+Para construirlo, todo empieza con el análisis de la estructura eigen de nuestros datos históricos originales: si los grados de libertad naturales existen en el sistema histórico, solo entonces construir este gráfico será posible.
+
+Si esa estructura interna no existe, este gráfico no tiene sentido. \
+Si existe, este gráfico es inevitable.

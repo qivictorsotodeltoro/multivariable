@@ -1,0 +1,100 @@
+
+NaOH.1 <- c(134.89, 129.30, 145.50, 143.80, 146.30, 141.50, 157.30, 141.10, 131.50, 156.60, 135.60, 128.39, 138.10, 140.50, 139.30, 152.39, 136.69, 130.30, 132.19, 134.80, 142.30)
+
+NaCl.1 <- c(203, 203.1, 208.6, 188.1, 189.1, 196.19, 185.30, 209.1, 200.8, 189.0, 192.8, 213.1, 193.8, 186.1, 204, 176.3, 186.1, 190.5, 198.6, 196.1, 198.8)
+
+I1.1   <- c(0.05, 0.06, 0.17, 0.11, 0.22, 0.16, 0.09, 0.16, 0.17, 0.19, 0.26, 0.07, 0.15, 0.30, 0.25, 0.19, 0.15, 0.23, 0.09, 0.17, 0.09)
+
+I2.1   <- c(4, 1.9, 6.1, 0.4, 0.5, 3.5, 2.9, 0.5, 3.8, 0.5, 0.5, 3.6, 2.7, 0.3, 3.8, 0.9, 1.6, 2.6, 5.7, 4.9, 0.3)
+
+Cl2.1  <- c(98.37, 98.37, 98.23, 98.44, 98.44, 98.26, 98.23, 98.69, 97.95, 97.97, 97.65, 98.43, 98.12, 98.15, 98.02, 98.22, 98.3, 98.08, 98.3, 97.98, 98.41)
+
+O2.1   <- c(1.17, 1.17, 1.42, 1.12, 1.11, 1.35, 1.4, 0.86, 1.64, 1.62, 1.94, 1.23, 1.36, 1.37, 1.54, 1.3, 1.25, 1.37, 1.16, 1.5, 1)
+
+
+NaOH.1[order(NaOH.1)]
+
+
+X <- data.frame(
+  NaOH = NaOH.1,
+  NaCl = NaCl.1,
+  I1   = I1.1,
+  I2   = I2.1,
+  Cl2  = Cl2.1,
+  O2   = O2.1
+)
+
+
+library(MASS)
+
+set.seed(123)
+
+# Dimensiones
+n_time   <- nrow(X)   # 21
+n_vars   <- ncol(X)   # 6
+n_batch  <- 30
+
+# Parámetros del proceso
+mu    <- colMeans(X)
+Sigma <- cov(X)
+
+# Inicializar tensor: (tiempo × variables × batch)
+X.tensor <- array(NA, dim = c(n_time, n_vars, n_batch))
+
+# Simular cada batch
+for (k in 1:n_batch) {
+  X.tensor[ , , k] <- mvrnorm(
+    n  = n_time,
+    mu = mu,
+    Sigma = Sigma
+  )
+}
+
+X.tensor <- abs(X.tensor)
+
+# Nombres
+dimnames(X.tensor) <- list(
+  time      = paste0("t", 1:n_time),
+  variables = colnames(X),
+  batch     = paste0("B", 1:n_batch)
+)
+
+dim(X.tensor)
+
+cov(X)                           # original
+cov(X.tensor[ , , 1])            # batch simulado
+
+
+
+
+n_time  <- dim(X.tensor)[1]
+n_vars  <- dim(X.tensor)[2]
+n_batch <- dim(X.tensor)[3]
+
+X.unfold <- matrix(NA, nrow = n_batch, ncol = n_time * n_vars)
+
+for (k in 1:n_batch) {
+  X.unfold[k, ] <- as.vector(X.tensor[ , , k])
+}
+
+dim(X.unfold)
+# 30 × 126
+
+colnames(X.unfold) <- paste0(
+  rep(colnames(X), times = n_time),
+  "_t",
+  rep(1:n_time, each = n_vars)
+)
+
+rownames(X.unfold) <- paste0("Batch_", 1:n_batch)
+
+View(X.unfold)
+
+
+
+
+
+X.scaled <- scale(X.unfold, center = TRUE, scale = TRUE)
+pca.mpca <- prcomp(X.scaled, center = FALSE, scale. = FALSE)
+
+summary(pca.mpca)

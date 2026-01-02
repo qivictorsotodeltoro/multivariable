@@ -1,0 +1,15 @@
+{
+  "hash": "ce9ebab49359dbc26a7bfbe6fe39934e",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Exploración Multivariada - Coordenadas Paralelas\"\n---\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(plotly)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nWarning: package 'plotly' was built under R version 4.5.2\n```\n\n\n:::\n\n```{.r .cell-code}\np1 <- readRDS(\"objects/p1_parcoord.rds\")\n```\n:::\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

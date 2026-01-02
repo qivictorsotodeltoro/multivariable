@@ -1,0 +1,7 @@
+"0","#| label: parcoord-plot"
+"0","#| dependson: objects/p1_parcoord.rds"
+"0","#| cache: false"
+"0",""
+"0","library(plotly)"
+"0","p <- readRDS(""objects/p1_parcoord.rds"")"
+"0","p"
