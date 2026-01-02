@@ -3,7 +3,7 @@
     "path": "~/Wine Data/pca_mspc_quimiometria/index.qmd",
     "project_path": "index.qmd",
     "type": "quarto_markdown",
-    "hash": "3610723747",
+    "hash": "690490530",
     "contents": "",
     "dirty": false,
     "created": 1767361157310.0,
@@ -19,14 +19,14 @@
         "scrollLine": "0",
         "docOutlineVisible": "0",
         "rmdVisualCollapsedChunks": "",
-        "rmdVisualModeLocation": "360:0"
+        "rmdVisualModeLocation": "596:100"
     },
     "folds": "",
-    "lastKnownWriteTime": 1767366343,
+    "lastKnownWriteTime": 1767369453,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1767366343681,
+    "last_content_update": 1767369453389,
     "read_only": false,
     "read_only_alternatives": []
 }

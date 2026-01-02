@@ -4,6 +4,16 @@ title: "Análisis Multivariable para Procedimientos de Control Estadístico de P
 
 ## ¿Cómo, por qué, para qué y de dónde surge el análisis multivariable?
 
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+**Este sitio está dirigido a ingenieros, químicos y especialistas técnicos que trabajan con procesos fisicoquímicos complejos y requieren algo más que herramientas o algoritmos: requieren comprensión estructural, validación estadística y control multivariable científicamente legítimo y sobe todo: [auditable.]{.underline}**
+
+Aquí no se presentan recetas rápidas ni enfoques basados únicamente en software. El punto de partida es más fundamental: entender que el control de un proceso multivariable no depende de variables aisladas, sino de la estructura estadística que las conecta.
+
+Desde esa premisa, este sitio aborda el análisis multivariable como lo que realmente es: una disciplina fundamentada en la identificación de grados de libertad, en la estructura de covarianza de los datos y en el subespacio donde emerge el significado físico del proceso.
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
 Los procesos fisicoquímicos son, por naturaleza, **multivariables**.
 
 Para el lector que busca comprender qué es realmente el *análisis multivariable* aplicado al proceso industrial, es necesario considerar antes algo mucho más fundamental.
