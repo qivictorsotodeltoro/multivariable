@@ -3,7 +3,7 @@
     "path": "~/Wine Data/pca_mspc_quimiometria/_quarto.yml",
     "project_path": "_quarto.yml",
     "type": "yaml",
-    "hash": "0",
+    "hash": "2551782587",
     "contents": "",
     "dirty": false,
     "created": 1766533506675.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "16,26",
+        "cursorPosition": "2,18",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1766758520,
+    "lastKnownWriteTime": 1767361804,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1766758521001,
+    "last_content_update": 1767361804432,
     "read_only": false,
     "read_only_alternatives": []
 }

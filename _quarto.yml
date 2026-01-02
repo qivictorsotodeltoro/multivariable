@@ -1,5 +1,6 @@
 project:
   type: website
+  output-dir: docs
 
 freeze: true 
 
@@ -31,7 +32,7 @@ website:
     contents:
 
       - text: "1. Inicio"
-        file: index1.qmd
+        file: index.qmd
 
       - text: "2. Diagnóstico Compuesto"
         file: index2.qmd
