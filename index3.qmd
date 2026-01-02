@@ -74,11 +74,11 @@ Este hecho impone un requisito metodológico no negociable: **el marco matemáti
 
 Por ello, la calidad de la información diagnóstica que ofrecen SPC y MSPC **no es comparable**.
 
-## T² y Q surgen de Σ 
+## T² y Q surgen de Σ
 
 De la matriz $\boldsymbol{\Sigma}$ surgen de forma natural las distancias multivariables $T^2$ y $Q$, y es con ellas que se construyen límites de control estadísticamente válidos.
 
-Esto no es una preferencia metodológica. \
+Esto no es una preferencia metodológica.\
 Es una consecuencia directa de la naturaleza física, química y matemática del proceso.
 
 Por esta razón:
@@ -93,17 +93,17 @@ Los límites no son empíricos ni heurísticos ni ideológicos: **se derivan de 
 
 ## Profesionalismo técnico
 
-El profesional que adopta MSPC no está “complicando” el control estadístico. \
+El profesional que adopta MSPC no está “complicando” el control estadístico.\
 Está **asumiendo su responsabilidad técnica** frente a procesos que ya no admiten aproximaciones parciales.
 
-La diferencia no es académica. \
+La diferencia no es académica.\
 Es **operativa, diagnóstica y económica**.
 
 Si el proceso es multivariable pero el método no lo es, el control será inevitablemente incompleto. En ese escenario, la organización opera con información parcial y queda expuesta a pérdidas sistemáticas, muchas veces invisibles hasta que ya son irreversibles.
 
 La materia, la energía y los procesos de transformación no se comportan como listas de variables independientes. Insistir en controlarlos así conduce, tarde o temprano, a diagnósticos incompletos, acciones correctivas afortunadas y una falsa sensación de control.
 
-Por eso, adoptar MSPC no es un acto de sofisticación intelectual o vanidad personal. \
+Por eso, adoptar MSPC no es un acto de sofisticación intelectual o vanidad personal.\
 Es un acto de **madurez profesional, emancipación técnica y mejora continua auténtica**.
 
 En última instancia, asumir que una sola variable fisicoquímica (aislada, incomunicada y desconectada del resto del sistema) sea capaz de explicar el comportamiento de un proceso complejo **no es una posición técnicamente defendible**.
